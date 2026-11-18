@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>泡芙的拼豆报价计算器</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1edfb;--card:#fff;--ink:#2e2357;--mute:#76709b;--line:#d9d2f1;--acc:#6b4fd8;--acc-ink:#fff;--soft:#ebe5fa;--rush:#e8590c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17132b;--card:#221c40;--ink:#ece8fb;--mute:#a49fc8;--line:#3a3265;--acc:#9a84ff;--acc-ink:#17132b;--soft:#2c2550;--rush:#ff9254}}
+:root[data-theme="dark"]{--bg:#17132b;--card:#221c40;--ink:#ece8fb;--mute:#a49fc8;--line:#3a3265;--acc:#9a84ff;--acc-ink:#17132b;--soft:#2c2550;--rush:#ff9254}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,-apple-system,'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;font-weight:500;line-height:1.45}
+main{max-width:640px;margin:0 auto;padding:20px 14px 130px}
+h1{font-size:1.5rem;margin:4px 0 12px;font-weight:800}
+h2{font-size:1.1rem;margin:0 0 10px;font-weight:800}
+.item,.panel{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.top{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+input[type=text],input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;min-width:0}
+input:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
+.tab{flex:none;font:inherit;font-weight:800;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tab[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.tab.plus{border-style:dashed;border-color:var(--acc);color:var(--acc);background:transparent}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+label.f{display:block;font-size:.8rem;color:var(--mute);font-weight:700}
+label.f input{margin-top:4px}
+.rush{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-weight:700;cursor:pointer}
+.rush input{width:20px;height:20px;accent-color:var(--rush)}
+.res{margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between}
+.tier{font-size:.85rem;color:var(--mute)}
+.tier b{color:var(--ink)}
+.sub-total{font-size:1.3rem;font-weight:800;color:var(--acc)}
+.pc{font-size:.85rem;color:var(--mute);width:100%}
+.del{flex:none;border:0;background:var(--soft);color:var(--mute);width:38px;height:38px;border-radius:10px;font-size:1.1rem;cursor:pointer}
+.add{width:100%;font:inherit;font-weight:800;border:2px dashed var(--acc);background:transparent;color:var(--acc);border-radius:14px;padding:13px;cursor:pointer;margin-bottom:12px}
+.add:hover{background:var(--soft)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.seg button{font:inherit;font-weight:800;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row span:last-child{font-weight:700;text-align:right}
+.row.big span{font-size:1.1rem;font-weight:800}
+.dep{background:var(--soft);border-radius:12px;padding:6px 12px;margin-top:10px}
+.dep .hl{color:var(--acc);font-size:1.25rem;font-weight:800}
+.note{font-size:.82rem;color:var(--mute);margin:6px 0 0}
+.btn{font:inherit;font-weight:800;border-radius:12px;padding:12px;cursor:pointer;border:0;background:var(--acc);color:var(--acc-ink);width:100%;margin-top:12px}
+.btn.alt{background:var(--soft);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ov{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+.ov[aria-current=true]{border-color:var(--acc)}
+.ov b{display:block}
+.ov small{color:var(--mute)}
+.ov .amt{text-align:right;font-weight:800;color:var(--acc);white-space:nowrap}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--acc);color:var(--acc-ink);padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 18px rgba(0,0,0,.18)}
+.bar div{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bar small{display:block;opacity:.88;font-weight:700}
+.bar strong{font-size:1.5rem;font-weight:800;display:block}
+details{margin-top:6px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px}
+summary{font-weight:800;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+td{padding:6px 0;border-top:1px solid var(--line)}
+td:last-child{text-align:right;font-weight:700}
+textarea.cp{width:100%;height:150px;margin-top:10px;font:inherit;font-size:.85rem;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:8px}
+.warn{color:var(--rush)}
+.nm{display:flex;gap:8px;align-items:flex-end}
+.nm label{flex:1;min-width:0}
+.delc{flex:none;font:inherit;font-weight:800;border-radius:10px;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);padding:0 12px;height:44px;cursor:pointer}
+.delc.warn{border-color:var(--rush)}
+</style>
+</head>
+<body>
+<main>
+<h1>泡芙的拼豆报价计算器</h1>
+
+<div class="tabs" id="tabs" role="group" aria-label="客户"></div>
+
+<section class="panel nm">
+<label class="f">客户名称（如：客户1 / 微信名）<input type="text" id="cname" placeholder="客户名称"></label>
+<button class="delc" id="delC" type="button">删除当前客户</button>
+</section>
+
+<div id="items"></div>
+<button class="add" id="add" type="button">+ 添加商品</button>
+
+<section class="panel" aria-labelledby="shipH">
+<h2 id="shipH">邮费</h2>
+<div class="seg">
+<button type="button" id="r0" aria-pressed="true">非偏远地区</button>
+<button type="button" id="r1" aria-pressed="false">偏远地区</button>
+</div>
+<label class="f" id="extraWrap" hidden>补差价（元，沟通后填写）<input type="number" inputmode="decimal" min="0" id="extra" placeholder="0"></label>
+<p class="note" id="shipNote"></p>
+</section>
+
+<section class="panel" aria-labelledby="sumH">
+<h2 id="sumH">本客户汇总</h2>
+<div class="row"><span>商品合计</span><span id="goods">¥0.00</span></div>
+<div class="row"><span>邮费</span><span id="ship">¥0.00</span></div>
+<div class="row big"><span>应付总额</span><span id="grand">¥0.00</span></div>
+<div class="dep">
+<div class="row"><span>需付定金（50%）</span><span class="hl" id="dep">¥0.00</span></div>
+<div class="row"><span>剩余尾款</span><span id="bal">¥0.00</span></div>
+</div>
+<button class="btn" id="copy" type="button">复制本客户报价单</button>
+<textarea class="cp" id="cpbox" hidden readonly aria-label="报价单文字"></textarea>
+<p class="note" id="cpmsg" aria-live="polite"></p>
+</section>
+
+<section class="panel" aria-labelledby="ovH">
+<h2 id="ovH">全部客户总览</h2>
+<div id="ov"></div>
+<div class="row big"><span>全部应付总额</span><span id="aGrand">¥0.00</span></div>
+<div class="row"><span>全部定金合计</span><span id="aDep">¥0.00</span></div>
+<div class="row"><span>全部尾款合计</span><span id="aBal">¥0.00</span></div>
+<button class="btn alt" id="copyAll" type="button">复制总览</button>
+<p class="note">订单会自动保存在这台设备的浏览器里。</p>
+</section>
+
+<details>
+<summary>价格表（元/颗）</summary>
+<table>
+<tr><td>普通豆（20色以内）</td><td>0.01</td></tr>
+<tr><td>色号复杂（20色到60色）</td><td>0.015</td></tr>
+<tr><td>色号复杂（60色以上）</td><td>0.02</td></tr>
+<tr><td>加急订单</td><td>0.02</td></tr>
+<tr><td>色号复杂 + 加急</td><td>0.03</td></tr>
+</table>
+<table>
+<tr><td>非偏远地区</td><td>8元</td></tr>
+<tr><td>满30元</td><td>半包邮（4元）</td></tr>
+<tr><td>满50元</td><td>全包邮</td></tr>
+<tr><td>偏远地区</td><td>需补差价，具体沟通</td></tr>
+</table>
+<p class="note">20色及以下算普通豆；超过20色且加急，统一按 0.03元/颗。半包邮按邮费减半（4元），按商品合计判断是否满额。</p>
+</details>
+</main>
+<div class="bar"><div>
+<span><small id="bname">客户1</small><small id="beads">0 颗</small></span>
+<span style="text-align:right"><small>应付总额</small><strong id="total">¥0.00</strong></span>
+<span style="text-align:right"><small>50%定金</small><strong id="total2">¥0.00</strong></span>
+</div></div>
+<script>
+var KEY='bead-calc-v3',S=null,delArm=false;
+function newItem(){return {id:S.nid++,name:'',beads:'',colors:'',qty:1,rush:false}}
+function newCust(){var c={id:S.cid++,name:'',remote:false,extra:'',items:[]};c.items.push(newItem());return c}
+function init(){
+  try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&p.cs&&p.cs.length){S=p}}}catch(e){}
+  if(!S){S={cs:[],cur:0,nid:1,cid:1};var c=newCust();S.cs.push(c);S.cur=c.id}
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function cur(){return S.cs.find(function(c){return c.id===S.cur})||S.cs[0]}
+function cname(c){return c.name.trim()||('客户'+(S.cs.indexOf(c)+1))}
+function rate(c,rush){if(c>20)return rush?0.03:(c>60?0.02:0.015);return rush?0.02:0.01}
+function tierName(c,rush){var t=c>60?'色号复杂（60色以上）':c>20?'色号复杂（20–60色）':'普通豆（20色以内）';return rush?t+' + 加急':t}
+function r2(n){return Math.round(n*100)/100}
+function money(n){return '¥'+r2(n).toFixed(2)}
+function calcItem(it){var b=+it.beads||0,c=+it.colors||0,q=+it.qty||0,r=rate(c,it.rush),per=b*r;return {r:r,per:per,sub:per*q,b:b*q,c:c,has:b>0&&it.colors!==''}}
+function totals(c){
+  var goods=0,beads=0;
+  c.items.forEach(function(it){var x=calcItem(it);goods+=x.sub;beads+=x.b});
+  goods=r2(goods);
+  var base=0,note='添加商品后自动计算。',extra=+c.extra||0;
+  if(goods>0){
+    base=goods>=50?0:goods>=30?4:8;
+    if(c.remote)note='偏远地区需补差价，具体沟通。基础邮费 '+money(base)+' + 补差价 '+money(extra)+'。';
+    else if(goods>=50)note='满50元，全包邮。';
+    else if(goods>=30)note='满30元，半包邮（邮费 4 元）。再买 '+money(50-goods)+' 即可全包邮。';
+    else note='邮费 8 元。再买 '+money(30-goods)+' 可享半包邮。';
+  }
+  var ship=goods>0?base+(c.remote?extra:0):0,grand=r2(goods+ship),dep=r2(grand/2);
+  return {goods:goods,ship:ship,grand:grand,dep:dep,bal:r2(grand-dep),beads:beads,note:note}
+}
+function renderTabs(){
+  var t=document.getElementById('tabs');t.innerHTML='';
+  S.cs.forEach(function(c){
+    var b=document.createElement('button');b.type='button';b.className='tab';b.textContent=cname(c);
+    b.setAttribute('aria-pressed',String(c.id===S.cur));b.dataset.id=c.id;t.appendChild(b);
+  });
+  var p=document.createElement('button');p.type='button';p.className='tab plus';p.id='addC';p.textContent='+ 新客户';t.appendChild(p);
+}
+function renderItems(focusLast){
+  var c=cur(),box=document.getElementById('items');box.innerHTML='';
+  c.items.forEach(function(it,i){
+    var d=document.createElement('div');d.className='item';d.dataset.id=it.id;
+    d.innerHTML='<div class="top"><input type="text" data-k="name" placeholder="商品'+(i+1)+'名称（选填）" aria-label="商品名称"><button class="del" type="button" aria-label="删除商品">✕</button></div>'+
+    '<div class="grid">'+
+    '<label class="f">每件豆数<input type="number" inputmode="numeric" min="0" data-k="beads" placeholder="如 800"></label>'+
+    '<label class="f">颜色数<input type="number" inputmode="numeric" min="0" data-k="colors" placeholder="如 15"></label>'+
+    '<label class="f">数量<input type="number" inputmode="numeric" min="1" data-k="qty"></label></div>'+
+    '<label class="rush"><input type="checkbox" data-k="rush"> 加急订单</label>'+
+    '<div class="res"><span class="tier"></span><span class="sub-total"></span><span class="pc"></span></div>';
+    d.querySelector('[data-k=name]').value=it.name;
+    d.querySelector('[data-k=beads]').value=it.beads;
+    d.querySelector('[data-k=colors]').value=it.colors;
+    d.querySelector('[data-k=qty]').value=it.qty;
+    d.querySelector('[data-k=rush]').checked=it.rush;
+    box.appendChild(d);
+  });
+  document.getElementById('cname').value=c.name;
+  document.getElementById('extra').value=c.extra;
+  setRemoteUI(c.remote);
+  update();
+  if(focusLast){var l=box.lastElementChild;if(l){l.querySelector('input').focus();l.scrollIntoView({block:'center',behavior:'smooth'})}}
+}
+function setRemoteUI(v){
+  document.getElementById('r0').setAttribute('aria-pressed',String(!v));
+  document.getElementById('r1').setAttribute('aria-pressed',String(v));
+  document.getElementById('extraWrap').hidden=!v;
+}
+function update(){
+  var c=cur();
+  document.querySelectorAll('.item').forEach(function(d){
+    var it=c.items.find(function(x){return x.id==d.dataset.id});var x=calcItem(it);
+    d.querySelector('.tier').innerHTML=x.has?'<b>'+tierName(x.c,it.rush)+'</b> · '+x.r+' 元/颗':'请输入豆数和颜色数';
+    d.querySelector('.sub-total').textContent=x.has?money(x.sub):'¥0.00';
+    d.querySelector('.pc').textContent=x.has?('单件：'+money(x.per)+' × '+(+it.qty||0)+' 件 = '+money(x.sub)):'';
+  });
+  var t=totals(c);
+  document.getElementById('goods').textContent=money(t.goods);
+  document.getElementById('ship').textContent=t.goods>0&&t.ship===0?'免邮':money(t.ship);
+  document.getElementById('grand').textContent=money(t.grand);
+  document.getElementById('dep').textContent=money(t.dep);
+  document.getElementById('bal').textContent=money(t.bal);
+  document.getElementById('shipNote').textContent=t.note;
+  document.getElementById('total').textContent=money(t.grand);
+  document.getElementById('total2').textContent=money(t.dep);
+  document.getElementById('bname').textContent=cname(c);
+  document.getElementById('beads').textContent=t.beads.toLocaleString()+' 颗';
+  renderOv();save();
+}
+function renderOv(){
+  var ov=document.getElementById('ov');ov.innerHTML='';
+  var G=0,D=0,B=0;
+  S.cs.forEach(function(c){
+    var t=totals(c);G+=t.grand;D+=t.dep;B+=t.bal;
+    var b=document.createElement('button');b.type='button';b.className='ov';b.dataset.id=c.id;
+    if(c.id===S.cur)b.setAttribute('aria-current','true');
+    var n=c.items.filter(function(i){return calcItem(i).has}).length;
+    b.innerHTML='<span><b></b><small>'+n+' 件商品 · 定金 '+money(t.dep)+'</small></span><span class="amt">'+money(t.grand)+'</span>';
+    b.querySelector('b').textContent=cname(c);
+    ov.appendChild(b);
+  });
+  document.getElementById('aGrand').textContent=money(G);
+  document.getElementById('aDep').textContent=money(D);
+  document.getElementById('aBal').textContent=money(B);
+  var tabs=document.querySelectorAll('.tab[data-id]');
+  tabs.forEach(function(b){var c=S.cs.find(function(x){return x.id==b.dataset.id});if(c)b.textContent=cname(c)});
+}
+function quote(c){
+  var t=totals(c),L=['【'+cname(c)+' 报价单】'],i=0;
+  c.items.forEach(function(it){
+    var x=calcItem(it);if(!x.has)return;i++;
+    L.push(i+'. '+(it.name.trim()||'商品'+i)+'：'+(+it.beads)+'颗 × '+x.c+'色'+(it.rush?'（加急）':'')+'，'+x.r+'元/颗，单件 '+money(x.per)+' × '+(+it.qty||0)+'件 = '+money(x.sub));
+  });
+  L.push('');
+  L.push('商品合计：'+money(t.goods));
+  L.push('邮费：'+(t.goods>0&&t.ship===0&&!c.remote?'免邮':money(t.ship))+(c.remote?'（偏远地区，含补差价）':''));
+  L.push('应付总额：'+money(t.grand));
+  L.push('50%定金：'+money(t.dep));
+  L.push('剩余尾款：'+money(t.bal));
+  return L.join('\n');
+}
+function overviewText(){
+  var L=['【全部客户总览】'],G=0,D=0,B=0;
+  S.cs.forEach(function(c){var t=totals(c);G+=t.grand;D+=t.dep;B+=t.bal;L.push(cname(c)+'：总额 '+money(t.grand)+'，定金 '+money(t.dep)+'，尾款 '+money(t.bal))});
+  L.push('');L.push('合计总额：'+money(G));L.push('定金合计：'+money(D));L.push('尾款合计：'+money(B));
+  return L.join('\n');
+}
+function copyText(text){
+  var box=document.getElementById('cpbox'),msg=document.getElementById('cpmsg');
+  function fallback(){
+    box.hidden=false;box.value=text;box.focus();box.select();
+    var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+    msg.textContent=ok?'已复制，可以直接粘贴发给客户。':'没能自动复制，请长按上面的文字手动复制。';
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){box.hidden=false;box.value=text;msg.textContent='已复制，可以直接粘贴发给客户。'},fallback);
+  }else fallback();
+}
+document.getElementById('copy').onclick=function(){copyText(quote(cur()))};
+document.getElementById('copyAll').onclick=function(){copyText(overviewText())};
+function switchTo(id){S.cur=+id;delArm=false;document.getElementById('delC').textContent='删除当前客户';document.getElementById('cpbox').hidden=true;document.getElementById('cpmsg').textContent='';renderTabs();renderItems();window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('tabs').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.id==='addC'){var c=newCust();S.cs.push(c);switchTo(c.id);document.getElementById('cname').focus()}
+  else if(b.dataset.id)switchTo(b.dataset.id);
+});
+document.getElementById('ov').addEventListener('click',function(e){var b=e.target.closest('button');if(b)switchTo(b.dataset.id)});
+document.getElementById('cname').addEventListener('input',function(e){cur().name=e.target.value;update()});
+document.getElementById('extra').addEventListener('input',function(e){cur().extra=e.target.value;update()});
+document.getElementById('r0').onclick=function(){cur().remote=false;setRemoteUI(false);update()};
+document.getElementById('r1').onclick=function(){cur().remote=true;setRemoteUI(true);update()};
+document.getElementById('items').addEventListener('input',function(e){
+  var d=e.target.closest('.item');if(!d)return;
+  var it=cur().items.find(function(x){return x.id==d.dataset.id}),k=e.target.dataset.k;
+  it[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;update();
+});
+document.getElementById('items').addEventListener('click',function(e){
+  if(!e.target.classList.contains('del'))return;
+  var c=cur(),id=e.target.closest('.item').dataset.id;
+  c.items=c.items.filter(function(x){return x.id!=id});
+  if(!c.items.length)c.items.push(newItem());
+  renderItems();
+});
+document.getElementById('add').onclick=function(){cur().items.push(newItem());renderItems(true)};
+document.getElementById('delC').onclick=function(){
+  var b=document.getElementById('delC');
+  if(!delArm){delArm=true;b.textContent='再点一次确认删除';b.classList.add('warn');return}
+  delArm=false;b.classList.remove('warn');b.textContent='删除当前客户';
+  S.cs=S.cs.filter(function(c){return c.id!==S.cur});
+  if(!S.cs.length)S.cs.push(newCust());
+  switchTo(S.cs[0].id);
+};
+init();renderTabs();renderItems();
+</script>
+</body>
+</html>
