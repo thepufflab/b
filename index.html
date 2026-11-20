@@ -1,508 +1,1537 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>泡芙的拼豆报价计算器</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f1edfb;--card:#fff;--ink:#2e2357;--mute:#5f5985;--line:#d9d2f1;--acc:#6b4fd8;--acc-ink:#fff;--soft:#ebe5fa;--rush:#e8590c;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17132b;--card:#221c40;--ink:#ece8fb;--mute:#bab5db;--line:#3a3265;--acc:#9a84ff;--acc-ink:#17132b;--soft:#2c2550;--rush:#ff9254}}
-:root[data-theme="dark"]{--bg:#17132b;--card:#221c40;--ink:#ece8fb;--mute:#bab5db;--line:#3a3265;--acc:#9a84ff;--acc-ink:#17132b;--soft:#2c2550;--rush:#ff9254}
-:root{--pat:var(--pat-l)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pat:var(--pat-d)}}
-:root[data-theme="dark"]{--pat:var(--pat-d)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg) var(--pat,none) 0 0/120px 120px;color:var(--ink);font-family:'Nunito',system-ui,-apple-system,'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;font-weight:500;line-height:1.45}
-main{max-width:640px;margin:0 auto;padding:20px 14px 130px}
-h1{font-size:1.5rem;margin:4px 0 12px;font-weight:800;display:inline-block;background:var(--card);padding:6px 16px;border-radius:14px;border:1.5px solid var(--line)}
-h2{font-size:1.1rem;margin:0 0 10px;font-weight:800}
-.item,.panel{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
-.top{display:flex;gap:8px;align-items:center;margin-bottom:10px}
-input[type=text],input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;min-width:0}
-input:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
-.tab{flex:none;font:inherit;font-weight:800;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tab[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
-.tab.plus{border-style:dashed;border-color:var(--acc);color:var(--acc);background:var(--card)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-label.f{display:block;font-size:.8rem;color:var(--mute);font-weight:700}
-label.f input{margin-top:4px}
-.rush{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-weight:700;cursor:pointer}
-.rush input{width:20px;height:20px;accent-color:var(--rush)}
-.res{margin-top:12px;padding-top:12px;border-top:1.5px dashed var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between}
-.tier{font-size:.85rem;color:var(--mute)}
-.tier b{color:var(--ink)}
-.sub-total{font-size:1.3rem;font-weight:800;color:var(--acc)}
-.pc{font-size:.85rem;color:var(--mute);width:100%}
-.del{flex:none;border:0;background:var(--soft);color:var(--mute);width:38px;height:38px;border-radius:10px;font-size:1.1rem;cursor:pointer}
-.add{width:100%;font:inherit;font-weight:800;border:2px dashed var(--acc);background:var(--card);color:var(--acc);border-radius:14px;padding:13px;cursor:pointer;margin-bottom:12px}
-.add:hover{background:var(--soft)}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.seg button{font:inherit;font-weight:800;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
-.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line)}
-.row:first-child{border-top:0}
-.row span:last-child{font-weight:700;text-align:right}
-.row.big span{font-size:1.1rem;font-weight:800}
-.dep{background:var(--soft);border-radius:12px;padding:6px 12px;margin-top:10px}
-.dep .hl{color:var(--acc);font-size:1.25rem;font-weight:800}
-.note{font-size:.82rem;color:var(--mute);margin:6px 0 0}
-.btn{font:inherit;font-weight:800;border-radius:12px;padding:12px;cursor:pointer;border:0;background:var(--acc);color:var(--acc-ink);width:100%;margin-top:12px}
-.btn.alt{background:var(--soft);color:var(--ink)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ov{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
-.ov[aria-current=true]{border-color:var(--acc)}
-.ov b{display:block}
-.ov small{color:var(--mute)}
-.ov .amt{text-align:right;font-weight:800;color:var(--acc);white-space:nowrap}
-.bar{position:fixed;left:0;right:0;bottom:0;background:var(--acc);color:var(--acc-ink);padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 18px rgba(0,0,0,.18)}
-.bar div{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.bar small{display:block;opacity:.88;font-weight:700}
-.bar strong{font-size:1.5rem;font-weight:800;display:block}
-details{margin-top:6px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px}
-summary{font-weight:800;cursor:pointer}
-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
-td{padding:6px 0;border-top:1px solid var(--line)}
-td:last-child{text-align:right;font-weight:700}
-textarea.cp{width:100%;height:150px;margin-top:10px;font:inherit;font-size:.85rem;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:8px}
-.warn{color:var(--rush)}
-.nm{display:flex;gap:8px;align-items:flex-end}
-.nm label{flex:1;min-width:0}
-.delc{flex:none;font:inherit;font-weight:800;border-radius:10px;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);padding:0 12px;height:44px;cursor:pointer}
-.delc.warn{border-color:var(--rush)}
-.pf{color:var(--acc)}
-[hidden]{display:none!important}
-.st{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;margin-top:4px;min-width:0}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.late{color:var(--rush);font-weight:800}
-.thm{display:flex;gap:6px;margin:0 0 14px}
-.thm button{flex:1;font:inherit;font-weight:800;font-size:.85rem;padding:8px 6px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
-.thm button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
-.own{background:var(--soft);border-radius:12px;padding:6px 12px;margin-top:10px}
-</style>
-</head>
-<body>
-<main>
-<h1>泡芙的拼豆报价计算器</h1>
-<div class="thm" id="thm" role="group" aria-label="显示模式"><button type="button" data-t="auto">跟随系统</button><button type="button" data-t="light">浅色</button><button type="button" data-t="dark">深色</button></div>
-
-<div class="tabs" id="tabs" role="group" aria-label="客户"></div>
-
-<section class="panel nm">
-<label class="f">客户名称（如：客户1 / 微信名）<input type="text" id="cname" placeholder="客户名称"></label>
-<button class="delc" id="delC" type="button">删除当前客户</button>
-</section>
-
-<section class="panel">
-<div class="g2">
-<label class="f">订单状态<select class="st" id="status"></select></label>
-<label class="f">交货日期<input class="st" type="date" id="due"></label>
-</div>
-<p class="note late" id="stNote"></p>
-</section>
-<div id="items"></div>
-<button class="add" id="add" type="button">+ 添加商品</button>
-
-<section class="panel" aria-labelledby="shipH">
-<h2 id="shipH">邮费</h2>
-<div class="seg">
-<button type="button" id="r0" aria-pressed="true">非偏远地区</button>
-<button type="button" id="r1" aria-pressed="false">偏远地区</button>
-</div>
-<label class="f" id="extraWrap" hidden>补差价（元，沟通后填写）<input type="number" inputmode="decimal" min="0" id="extra" placeholder="0"></label>
-<p class="note" id="shipNote"></p>
-</section>
-
-<section class="panel">
-<h2>优惠与额外成本</h2>
-<div class="g2">
-<label class="f">优惠减免（元，客户可见）<input type="number" inputmode="decimal" min="0" id="disc" placeholder="0"></label>
-<label class="f">额外成本（元，仅自己可见）<input type="number" inputmode="decimal" min="0" id="xcost" placeholder="包装费、拼豆板等"></label>
-</div>
-<p class="note">优惠从商品合计里扣除，定金会跟着重算；邮费仍按优惠前的商品合计判断。额外成本只用来算利润。</p>
-</section>
-
-<section class="panel" aria-labelledby="sumH">
-<h2 id="sumH">本客户汇总</h2>
-<div class="row"><span>商品合计</span><span id="goods">¥0.00</span></div>
-<div class="row" id="discRow" hidden><span>优惠减免</span><span id="discV">-¥0.00</span></div>
-<div class="row"><span>邮费</span><span id="ship">¥0.00</span></div>
-<div class="row big"><span>应付总额</span><span id="grand">¥0.00</span></div>
-<div class="dep">
-<div class="row"><span>需付定金（50%）</span><span class="hl" id="dep">¥0.00</span></div>
-<div class="row"><span>剩余尾款</span><span id="bal">¥0.00</span></div>
-<div class="row"><span>目前待收（按订单状态）</span><span id="owe">¥0.00</span></div>
-</div>
-<div class="own">
-<div class="row"><span>豆子成本</span><span id="cost">¥0.00</span></div>
-<div class="row"><span>额外成本</span><span id="xc">¥0.00</span></div>
-<div class="row"><span>利润（不含邮费）</span><span class="pf" id="profit">¥0.00</span></div>
-</div>
-<p class="note">成本和利润只有你自己看得到，不会出现在报价单里。</p>
-<button class="btn" id="copy" type="button">复制本客户报价单</button>
-<button class="btn alt" id="mkImg" type="button">生成报价图</button>
-<div id="imgBox" hidden><img id="qimg" alt="报价单图片" style="width:100%;height:auto;border-radius:12px;margin-top:12px;display:block"><p class="note">长按图片可以保存或转发，也可以直接截图。修改订单后需要重新生成。</p></div>
-<textarea class="cp" id="cpbox" hidden readonly aria-label="报价单文字"></textarea>
-<p class="note" id="cpmsg" aria-live="polite"></p>
-</section>
-
-<section class="panel" aria-labelledby="ovH">
-<h2 id="ovH">全部客户总览</h2>
-<div id="ov"></div>
-<div class="row big"><span>全部应付总额</span><span id="aGrand">¥0.00</span></div>
-<div class="row"><span>全部定金合计</span><span id="aDep">¥0.00</span></div>
-<div class="row"><span>全部尾款合计</span><span id="aBal">¥0.00</span></div>
-<div class="row big"><span>目前待收款合计</span><span id="aOwe">¥0.00</span></div>
-<div class="row"><span>全部豆子成本</span><span id="aCost">¥0.00</span></div>
-<div class="row big"><span>全部利润（不含邮费）</span><span class="pf" id="aProfit">¥0.00</span></div>
-<button class="btn alt" id="copyAll" type="button">复制总览</button>
-<p class="note">订单会自动保存在这台设备的浏览器里。总览按交货日期从近到远排列。</p>
-</section>
-
-<section class="panel">
-<h2>备份与恢复</h2>
-<p class="note" style="margin-top:0">点“生成备份”后复制文字，保存到备忘录或发给自己。换手机时把文字粘贴到下面，点“导入备份”即可恢复。</p>
-<textarea class="cp" id="bk" aria-label="备份文字" placeholder="备份文字显示在这里，或把备份粘贴到这里"></textarea>
-<div class="two">
-<button class="btn alt" id="bkMake" type="button">生成备份</button>
-<button class="btn alt" id="bkLoad" type="button">导入备份</button>
-</div>
-<p class="note" id="bkMsg" aria-live="polite"></p>
-</section>
-
-<details>
-<summary>价格表（元/颗）</summary>
-<table>
-<tr><td>普通豆（20色以内）</td><td>0.01</td></tr>
-<tr><td>色号复杂（20色到60色）</td><td>0.015</td></tr>
-<tr><td>色号复杂（60色以上）</td><td>0.02</td></tr>
-<tr><td>加急订单</td><td>0.02</td></tr>
-<tr><td>色号复杂 + 加急</td><td>0.03</td></tr>
-</table>
-<table>
-<tr><td>非偏远地区</td><td>8元</td></tr>
-<tr><td>满30元</td><td>半包邮（4元）</td></tr>
-<tr><td>满50元</td><td>全包邮</td></tr>
-<tr><td>偏远地区</td><td>需补差价，具体沟通</td></tr>
-</table>
-<p class="note">20色及以下算普通豆；超过20色且加急，统一按 0.03元/颗。半包邮按邮费减半（4元），按商品合计判断是否满额。</p>
-</details>
-<details>
-<summary>成本设置</summary>
-<label class="f" style="margin-top:10px">每 100g（约 10000 颗）豆子成本（元）<input type="number" inputmode="decimal" min="0" step="0.1" id="costIn"></label>
-<p class="note" id="costNote"></p>
-<p class="note">利润 = 商品合计 − 优惠 − 豆子成本 − 额外成本，不含邮费。</p>
-</details>
-</main>
-<div class="bar"><div>
-<span><small id="bname">客户1</small><small id="beads">0 颗</small></span>
-<span style="text-align:right"><small>应付总额</small><strong id="total">¥0.00</strong></span>
-<span style="text-align:right"><small>50%定金</small><strong id="total2">¥0.00</strong></span>
-</div></div>
-<script>
-(function(){
-  var cols=['#ff8fab','#ffb86b','#ffe066','#7bd88f','#6ec6ff','#b69cff','#ff7eb6'];
-  function ring(cx,cy,r,h){return 'M'+(cx-r)+' '+cy+'a'+r+' '+r+' 0 1 0 '+(2*r)+' 0a'+r+' '+r+' 0 1 0 '+(-2*r)+' 0M'+(cx-h)+' '+cy+'a'+h+' '+h+' 0 1 0 '+(2*h)+' 0a'+h+' '+h+' 0 1 0 '+(-2*h)+' 0z'}
-  function make(op){
-    var s='<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">';
-    for(var y=0;y<4;y++)for(var x=0;x<4;x++){
-      var cx=15+x*30,cy=15+y*30,v=(x*7+y*13+x*y*5)%11;
-      if(v<3)s+='<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="#8a80b8" fill-opacity="'+(op*0.35)+'"/>';
-      else s+='<path fill-rule="evenodd" fill="'+cols[(x*3+y*5+v)%cols.length]+'" fill-opacity="'+op+'" d="'+ring(cx,cy,11,4)+'"/>';
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>泡芙的拼豆报价计算器</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f1edfb;
+      --pbg: #fff4f8;
+      --dot: #ffd3e1;
+      --card: #fff;
+      --ink: #2e2357;
+      --mute: #5f5985;
+      --line: #d9d2f1;
+      --acc: #6b4fd8;
+      --acc-ink: #fff;
+      --soft: #ebe5fa;
+      --rush: #e8590c;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
     }
-    return 'url("data:image/svg+xml,'+encodeURIComponent(s+'</svg>')+'")';
-  }
-  var st=document.documentElement.style;
-  st.setProperty('--pat-l',make(0.35));st.setProperty('--pat-d',make(0.2));
-})();
-var KEY='bead-calc-v3',S=null,delArm=false,bkArm=false;
-var STAT=['待收定金','定金已收','制作中','已发图确认','尾款已收','已发货'];
-function newItem(){return {id:S.nid++,name:'',beads:'',colors:'',qty:1,rush:false}}
-function newCust(){var c={id:S.cid++,name:'',remote:false,extra:'',status:0,due:'',disc:'',xcost:'',items:[]};c.items.push(newItem());return c}
-function init(){
-  try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&p.cs&&p.cs.length){S=p}}}catch(e){}
-  if(!S){S={cs:[],cur:0,nid:1,cid:1};var c=newCust();S.cs.push(c);S.cur=c.id}
-  if(S.cost==null)S.cost=7;
-}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-function cur(){return S.cs.find(function(c){return c.id===S.cur})||S.cs[0]}
-function cname(c){return c.name.trim()||('客户'+(S.cs.indexOf(c)+1))}
-function rate(c,rush){if(c>20)return rush?0.03:(c>60?0.02:0.015);return rush?0.02:0.01}
-function tierName(c,rush){var t=c>60?'色号复杂（60色以上）':c>20?'色号复杂（20–60色）':'普通豆（20色以内）';return rush?t+' + 加急':t}
-function r2(n){return Math.round(n*100)/100}
-function money(n){return '¥'+r2(n).toFixed(2)}
-function calcItem(it){var b=+it.beads||0,c=+it.colors||0,q=+it.qty||0,r=rate(c,it.rush),per=b*r;return {r:r,per:per,sub:per*q,b:b*q,c:c,has:b>0&&it.colors!==''}}
-function totals(c){
-  var goods=0,beads=0;
-  c.items.forEach(function(it){var x=calcItem(it);goods+=x.sub;beads+=x.b});
-  goods=r2(goods);
-  var base=0,note='添加商品后自动计算。',extra=+c.extra||0;
-  if(goods>0){
-    base=goods>=50?0:goods>=30?4:8;
-    if(c.remote)note='偏远地区需补差价，具体沟通。基础邮费 '+money(base)+' + 补差价 '+money(extra)+'。';
-    else if(goods>=50)note='满50元，全包邮。';
-    else if(goods>=30)note='满30元，半包邮（邮费 4 元）。再买 '+money(50-goods)+' 即可全包邮。';
-    else note='邮费 8 元。再买 '+money(30-goods)+' 可享半包邮。';
-  }
-  var disc=Math.min(+c.disc||0,goods),ship=goods>0?base+(c.remote?extra:0):0,grand=r2(goods-disc+ship),dep=r2(grand/2);
-  var cost=beads*(+S.cost||0)/10000,xc=goods>0?(+c.xcost||0):0,st=c.status||0,paid=st>=4?grand:st>=1?dep:0;
-  return {goods:goods,disc:disc,ship:ship,grand:grand,dep:dep,bal:r2(grand-dep),beads:beads,note:note,cost:cost,xc:xc,profit:goods>0?goods-disc-cost-xc:0,owe:r2(grand-paid)}
-}
-function dueInfo(c){
-  if(!c.due||(c.status||0)>=5)return '';
-  var d=new Date(c.due+'T00:00:00'),n=new Date();n.setHours(0,0,0,0);
-  var diff=Math.round((d-n)/86400000);
-  return diff<0?'已超过交货日期 '+(-diff)+' 天':diff===0?'今天交货':diff<=3?'还有 '+diff+' 天交货':'';
-}
-function renderTabs(){
-  var t=document.getElementById('tabs');t.innerHTML='';
-  S.cs.forEach(function(c){
-    var b=document.createElement('button');b.type='button';b.className='tab';b.textContent=cname(c);
-    b.setAttribute('aria-pressed',String(c.id===S.cur));b.dataset.id=c.id;t.appendChild(b);
-  });
-  var p=document.createElement('button');p.type='button';p.className='tab plus';p.id='addC';p.textContent='+ 新客户';t.appendChild(p);
-}
-function renderItems(focusLast){
-  var c=cur(),box=document.getElementById('items');box.innerHTML='';
-  c.items.forEach(function(it,i){
-    var d=document.createElement('div');d.className='item';d.dataset.id=it.id;
-    d.innerHTML='<div class="top"><input type="text" data-k="name" placeholder="商品'+(i+1)+'名称（选填）" aria-label="商品名称"><button class="del" type="button" aria-label="删除商品">✕</button></div>'+
-    '<div class="grid">'+
-    '<label class="f">每件豆数<input type="number" inputmode="numeric" min="0" data-k="beads" placeholder="如 800"></label>'+
-    '<label class="f">颜色数<input type="number" inputmode="numeric" min="0" data-k="colors" placeholder="如 15"></label>'+
-    '<label class="f">数量<input type="number" inputmode="numeric" min="1" data-k="qty"></label></div>'+
-    '<label class="rush"><input type="checkbox" data-k="rush"> 加急订单</label>'+
-    '<div class="res"><span class="tier"></span><span class="sub-total"></span><span class="pc"></span></div>';
-    d.querySelector('[data-k=name]').value=it.name;
-    d.querySelector('[data-k=beads]').value=it.beads;
-    d.querySelector('[data-k=colors]').value=it.colors;
-    d.querySelector('[data-k=qty]').value=it.qty;
-    d.querySelector('[data-k=rush]').checked=it.rush;
-    box.appendChild(d);
-  });
-  document.getElementById('cname').value=c.name;
-  document.getElementById('extra').value=c.extra;
-  document.getElementById('status').value=c.status||0;
-  document.getElementById('due').value=c.due||'';
-  document.getElementById('disc').value=c.disc||'';
-  document.getElementById('xcost').value=c.xcost||'';
-  setRemoteUI(c.remote);
-  update();
-  if(focusLast){var l=box.lastElementChild;if(l){l.querySelector('input').focus();l.scrollIntoView({block:'center'})}}
-}
-function setRemoteUI(v){
-  document.getElementById('r0').setAttribute('aria-pressed',String(!v));
-  document.getElementById('r1').setAttribute('aria-pressed',String(v));
-  document.getElementById('extraWrap').hidden=!v;
-}
-function update(){
-  var c=cur();
-  document.querySelectorAll('.item').forEach(function(d){
-    var it=c.items.find(function(x){return x.id==d.dataset.id});var x=calcItem(it);
-    d.querySelector('.tier').innerHTML=x.has?'<b>'+tierName(x.c,it.rush)+'</b> · '+x.r+' 元/颗':'请输入豆数和颜色数';
-    d.querySelector('.sub-total').textContent=x.has?money(x.sub):'¥0.00';
-    d.querySelector('.pc').textContent=x.has?('单件：'+money(x.per)+' × '+(+it.qty||0)+' 件 = '+money(x.sub)):'';
-  });
-  var t=totals(c);
-  document.getElementById('goods').textContent=money(t.goods);
-  document.getElementById('ship').textContent=t.goods>0&&t.ship===0?'免邮':money(t.ship);
-  document.getElementById('grand').textContent=money(t.grand);
-  document.getElementById('dep').textContent=money(t.dep);
-  document.getElementById('bal').textContent=money(t.bal);
-  document.getElementById('discRow').hidden=!(t.disc>0);
-  document.getElementById('discV').textContent='-'+money(t.disc);
-  document.getElementById('xc').textContent=money(t.xc);
-  document.getElementById('owe').textContent=money(t.owe);
-  document.getElementById('stNote').textContent=dueInfo(c);
-  document.getElementById('imgBox').hidden=true;
-  document.getElementById('cost').textContent=money(t.cost);
-  document.getElementById('profit').textContent=money(t.profit);
-  document.getElementById('costNote').textContent='每颗约 '+((+S.cost||0)/10000).toFixed(5).replace(/0+$/,'')+' 元';
-  document.getElementById('shipNote').textContent=t.note;
-  document.getElementById('total').textContent=money(t.grand);
-  document.getElementById('total2').textContent=money(t.dep);
-  document.getElementById('bname').textContent=cname(c);
-  document.getElementById('beads').textContent=t.beads.toLocaleString()+' 颗';
-  renderOv();save();
-}
-function renderOv(){
-  var ov=document.getElementById('ov');ov.innerHTML='';
-  var G=0,D=0,B=0,C=0,P=0,O=0;
-  S.cs.slice().sort(function(a,b){var x=a.due||'9999',y=b.due||'9999';return x<y?-1:x>y?1:0}).forEach(function(c){
-    var t=totals(c);G+=t.grand;D+=t.dep;B+=t.bal;C+=t.cost;P+=t.profit;O+=t.owe;
-    var b=document.createElement('button');b.type='button';b.className='ov';b.dataset.id=c.id;
-    if(c.id===S.cur)b.setAttribute('aria-current','true');
-    var n=c.items.filter(function(i){return calcItem(i).has}).length;
-    b.innerHTML='<span><b></b><small>'+STAT[c.status||0]+' · '+n+' 件商品'+(c.due?' · 交货 '+c.due.slice(5):'')+'</small></span><span class="amt">'+money(t.grand)+'<small style="display:block;font-weight:700">待收 '+money(t.owe)+'</small></span>';
-    b.querySelector('b').textContent=cname(c);
-    ov.appendChild(b);
-  });
-  document.getElementById('aGrand').textContent=money(G);
-  document.getElementById('aDep').textContent=money(D);
-  document.getElementById('aBal').textContent=money(B);
-  document.getElementById('aOwe').textContent=money(O);
-  document.getElementById('aCost').textContent=money(C);
-  document.getElementById('aProfit').textContent=money(P);
-  var tabs=document.querySelectorAll('.tab[data-id]');
-  tabs.forEach(function(b){var c=S.cs.find(function(x){return x.id==b.dataset.id});if(c)b.textContent=cname(c)});
-}
-function quote(c){
-  var t=totals(c),L=['【'+cname(c)+' 报价单】'],i=0;
-  c.items.forEach(function(it){
-    var x=calcItem(it);if(!x.has)return;i++;
-    L.push(i+'. '+(it.name.trim()||'商品'+i)+'：'+(+it.beads)+'颗 × '+x.c+'色'+(it.rush?'（加急）':'')+'，'+x.r+'元/颗，单件 '+money(x.per)+' × '+(+it.qty||0)+'件 = '+money(x.sub));
-  });
-  L.push('');
-  L.push('商品合计：'+money(t.goods));
-  if(t.disc>0)L.push('优惠减免：-'+money(t.disc));
-  L.push('邮费：'+(t.goods>0&&t.ship===0&&!c.remote?'免邮':money(t.ship))+(c.remote?'（偏远地区，含补差价）':''));
-  L.push('应付总额：'+money(t.grand));
-  L.push('50%定金：'+money(t.dep));
-  L.push('剩余尾款：'+money(t.bal));
-  return L.join('\n');
-}
-function overviewText(){
-  var L=['【全部客户总览】'],G=0,D=0,B=0;
-  S.cs.forEach(function(c){var t=totals(c);G+=t.grand;D+=t.dep;B+=t.bal;L.push(cname(c)+'：总额 '+money(t.grand)+'，定金 '+money(t.dep)+'，尾款 '+money(t.bal))});
-  L.push('');L.push('合计总额：'+money(G));L.push('定金合计：'+money(D));L.push('尾款合计：'+money(B));
-  return L.join('\n');
-}
-function copyText(text){
-  var box=document.getElementById('cpbox'),msg=document.getElementById('cpmsg');
-  function fallback(){
-    box.hidden=false;box.value=text;box.focus();box.select();
-    var ok=false;try{ok=document.execCommand('copy')}catch(e){}
-    msg.textContent=ok?'已复制，可以直接粘贴发给客户。':'没能自动复制，请长按上面的文字手动复制。';
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){box.hidden=false;box.value=text;msg.textContent='已复制，可以直接粘贴发给客户。'},fallback);
-  }else fallback();
-}
-document.getElementById('copy').onclick=function(){copyText(quote(cur()))};
-document.getElementById('copyAll').onclick=function(){copyText(overviewText())};
-function switchTo(id){S.cur=+id;delArm=false;document.getElementById('delC').textContent='删除当前客户';document.getElementById('cpbox').hidden=true;document.getElementById('cpmsg').textContent='';renderTabs();renderItems();window.scrollTo(0,0)}
-document.getElementById('tabs').addEventListener('click',function(e){
-  var b=e.target.closest('button');if(!b)return;
-  if(b.id==='addC'){var c=newCust();S.cs.push(c);switchTo(c.id);document.getElementById('cname').focus()}
-  else if(b.dataset.id)switchTo(b.dataset.id);
-});
-document.getElementById('ov').addEventListener('click',function(e){var b=e.target.closest('button');if(b)switchTo(b.dataset.id)});
-document.getElementById('cname').addEventListener('input',function(e){cur().name=e.target.value;update()});
-document.getElementById('extra').addEventListener('input',function(e){cur().extra=e.target.value;update()});
-document.getElementById('status').addEventListener('change',function(e){cur().status=+e.target.value;update()});
-document.getElementById('due').addEventListener('input',function(e){cur().due=e.target.value;update()});
-document.getElementById('disc').addEventListener('input',function(e){cur().disc=e.target.value;update()});
-document.getElementById('xcost').addEventListener('input',function(e){cur().xcost=e.target.value;update()});
-document.getElementById('r0').onclick=function(){cur().remote=false;setRemoteUI(false);update()};
-document.getElementById('r1').onclick=function(){cur().remote=true;setRemoteUI(true);update()};
-document.getElementById('items').addEventListener('input',function(e){
-  var d=e.target.closest('.item');if(!d)return;
-  var it=cur().items.find(function(x){return x.id==d.dataset.id}),k=e.target.dataset.k;
-  it[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;update();
-});
-document.getElementById('items').addEventListener('click',function(e){
-  if(!e.target.classList.contains('del'))return;
-  var c=cur(),id=e.target.closest('.item').dataset.id;
-  c.items=c.items.filter(function(x){return x.id!=id});
-  if(!c.items.length)c.items.push(newItem());
-  renderItems();
-});
-document.getElementById('add').onclick=function(){cur().items.push(newItem());renderItems(true)};
-document.getElementById('delC').onclick=function(){
-  var b=document.getElementById('delC');
-  if(!delArm){delArm=true;b.textContent='再点一次确认删除';b.classList.add('warn');return}
-  delArm=false;b.classList.remove('warn');b.textContent='删除当前客户';
-  S.cs=S.cs.filter(function(c){return c.id!==S.cur});
-  if(!S.cs.length)S.cs.push(newCust());
-  switchTo(S.cs[0].id);
-};
-init();
-document.getElementById('costIn').value=S.cost;
-document.getElementById('costIn').addEventListener('input',function(e){S.cost=e.target.value;update()});
-STAT.forEach(function(s,i){var o=document.createElement('option');o.value=i;o.textContent=s;document.getElementById('status').appendChild(o)});
-document.getElementById('bkMake').onclick=function(){
-  var b=document.getElementById('bk');b.value=JSON.stringify(S);b.focus();b.select();
-  var ok=false;try{ok=document.execCommand('copy')}catch(e){}
-  document.getElementById('bkMsg').textContent=ok?'备份已生成并复制，请保存到备忘录。':'备份已生成，请长按文字全选复制并保存。';
-};
-document.getElementById('bkLoad').onclick=function(){
-  var btn=document.getElementById('bkLoad'),msg=document.getElementById('bkMsg'),p;
-  try{p=JSON.parse(document.getElementById('bk').value)}catch(e){}
-  if(!p||!p.cs||!p.cs.length||!p.cs[0].items){msg.textContent='备份文字不正确，请确认完整粘贴。';return}
-  if(!bkArm){bkArm=true;btn.textContent='会覆盖现有订单，再点确认';msg.textContent='';return}
-  bkArm=false;btn.textContent='导入备份';
-  S=p;if(S.cost==null)S.cost=7;S.cur=S.cs[0].id;
-  document.getElementById('costIn').value=S.cost;
-  renderTabs();renderItems();msg.textContent='已导入备份。';
-};
-function applyTheme(t){
-  var r=document.documentElement;
-  if(t==='light'||t==='dark')r.setAttribute('data-theme',t);else r.removeAttribute('data-theme');
-  document.querySelectorAll('#thm button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===(t||'auto')))});
-}
-var th='auto';try{th=localStorage.getItem('bead-theme')||'auto'}catch(e){}
-applyTheme(th);
-document.getElementById('thm').addEventListener('click',function(e){
-  var b=e.target.closest('button');if(!b)return;
-  th=b.dataset.t;applyTheme(th);
-  try{localStorage.setItem('bead-theme',th)}catch(err){}
-});
-function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
-function beadRow(x,y,W,bg){
-  var cols=['#ff8fab','#ffb86b','#ffe066','#7bd88f','#6ec6ff','#b69cff','#ff7eb6'],n=Math.floor((W-40)/36),off=(W-(n-1)*36)/2;
-  for(var i=0;i<n;i++){var cx=off+i*36;x.fillStyle=cols[i%cols.length];x.beginPath();x.arc(cx,y,13,0,7);x.fill();x.fillStyle=bg;x.beginPath();x.arc(cx,y,5,0,7);x.fill()}
-}
-function fit(x,s,w){if(x.measureText(s).width<=w)return s;while(s.length>1&&x.measureText(s+'…').width>w)s=s.slice(0,-1);return s+'…'}
-function drawQuote(c){
-  var t=totals(c),rows=[],i=0;
-  c.items.forEach(function(it){var q=calcItem(it);if(!q.has)return;i++;rows.push({n:it.name.trim()||'商品'+i,d:(+it.beads)+'颗 · '+q.c+'色 · '+q.r+'元/颗'+(it.rush?' · 加急':'')+' · '+(+it.qty||0)+'件',s:money(q.sub)})});
-  if(!rows.length)return null;
-  var W=750,L=62,R=W-62,F='"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif';
-  var lines=[['商品合计',money(t.goods)]];
-  if(t.disc>0)lines.push(['优惠减免','-'+money(t.disc)]);
-  lines.push([c.remote?'邮费（偏远地区，含补差价）':'邮费',(!c.remote&&t.ship===0)?'免邮':money(t.ship)]);
-  var cardH=30+rows.length*104+16+lines.length*52+70+20+130+30,y0=240,H=y0+cardH+30+40+50+20;
-  var cv=document.createElement('canvas');cv.width=W;cv.height=H;var x=cv.getContext('2d');
-  x.fillStyle='#f1edfb';x.fillRect(0,0,W,H);
-  x.fillStyle='#6b4fd8';x.fillRect(0,0,W,170);
-  x.fillStyle='#fff';x.textAlign='center';x.font='bold 52px '+F;x.fillText('泡芙的拼豆',W/2,82);
-  x.font='30px '+F;x.fillText(fit(x,cname(c)+' 报价单',W-80),W/2,134);
-  beadRow(x,205,W,'#f1edfb');
-  x.fillStyle='#fff';rr(x,30,y0,W-60,cardH,24);x.fill();
-  var y=y0+30;x.textAlign='left';
-  rows.forEach(function(r){
-    x.fillStyle='#2e2357';x.font='bold 32px '+F;x.fillText(fit(x,r.n,420),L,y+34);
-    x.fillStyle='#5f5985';x.font='24px '+F;x.fillText(fit(x,r.d,430),L,y+72);
-    x.fillStyle='#2e2357';x.font='bold 32px '+F;x.textAlign='right';x.fillText(r.s,R,y+44);x.textAlign='left';
-    x.fillStyle='#e4def5';x.fillRect(L,y+92,R-L,2);y+=104;
-  });
-  y+=16;
-  lines.forEach(function(l){
-    x.fillStyle='#5f5985';x.font='28px '+F;x.fillText(l[0],L,y+34);
-    x.fillStyle='#2e2357';x.textAlign='right';x.fillText(l[1],R,y+34);x.textAlign='left';y+=52;
-  });
-  x.fillStyle='#2e2357';x.font='bold 34px '+F;x.fillText('应付总额',L,y+46);
-  x.fillStyle='#6b4fd8';x.font='bold 42px '+F;x.textAlign='right';x.fillText(money(t.grand),R,y+46);x.textAlign='left';y+=70+20;
-  x.fillStyle='#ebe5fa';rr(x,L-16,y,R-L+32,130,18);x.fill();
-  x.fillStyle='#6b4fd8';x.font='bold 32px '+F;x.fillText('50% 定金',L,y+54);
-  x.textAlign='right';x.fillText(money(t.dep),R,y+54);
-  x.textAlign='left';x.fillStyle='#5f5985';x.font='28px '+F;x.fillText('剩余尾款',L,y+102);
-  x.textAlign='right';x.fillText(money(t.bal),R,y+102);
-  x.textAlign='center';x.fillStyle='#5f5985';x.font='24px '+F;x.fillText('确认后付定金开始制作',W/2,y0+cardH+30+30);
-  beadRow(x,y0+cardH+30+40+25,W,'#f1edfb');
-  return cv;
-}
-document.getElementById('mkImg').onclick=function(){
-  var cv=drawQuote(cur()),msg=document.getElementById('cpmsg');
-  if(!cv){msg.textContent='请先填写至少一个商品。';return}
-  msg.textContent='';
-  var im=document.getElementById('qimg');im.src=cv.toDataURL('image/png');
-  var bx=document.getElementById('imgBox');bx.hidden=false;bx.scrollIntoView({block:'nearest'});
-};
-renderTabs();renderItems();
-</script>
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #17132b;
+        --pbg: #2a2035;
+        --dot: #3d304b;
+        --card: #221c40;
+        --ink: #ece8fb;
+        --mute: #bab5db;
+        --line: #3a3265;
+        --acc: #9a84ff;
+        --acc-ink: #17132b;
+        --soft: #2c2550;
+        --rush: #ff9254
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #17132b;
+      --pbg: #2a2035;
+      --dot: #3d304b;
+      --card: #221c40;
+      --ink: #ece8fb;
+      --mute: #bab5db;
+      --line: #3a3265;
+      --acc: #9a84ff;
+      --acc-ink: #17132b;
+      --soft: #2c2550;
+      --rush: #ff9254
+    }
+
+    :root {
+      --pat: var(--pat-l)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --pat: var(--pat-d)
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --pat: var(--pat-d)
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px)
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg) var(--pat, none) 0 0/120px 120px;
+      color: var(--ink);
+      font-family: 'Nunito', system-ui, -apple-system, 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      font-weight: 500;
+      line-height: 1.45
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 20px 14px 130px
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 4px 0 12px;
+      font-weight: 800;
+      display: inline-block;
+      background: var(--card);
+      padding: 6px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--line)
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0 0 10px;
+      font-weight: 800
+    }
+
+    .item,
+    .panel {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px
+    }
+
+    .top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px
+    }
+
+    input[type=text],
+    input[type=number] {
+      width: 100%;
+      font: inherit;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 11px;
+      min-width: 0
+    }
+
+    input:focus-visible,
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--acc);
+      outline-offset: 1px
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 2px 10px;
+      margin: 0 -2px;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .tab {
+      flex: none;
+      font: inherit;
+      font-weight: 800;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+      max-width: 9em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+
+    .tab[aria-pressed=true] {
+      background: var(--acc);
+      color: var(--acc-ink);
+      border-color: var(--acc)
+    }
+
+    .tab.plus {
+      border-style: dashed;
+      border-color: var(--acc);
+      color: var(--acc);
+      background: var(--card)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px
+    }
+
+    label.f {
+      display: block;
+      font-size: .8rem;
+      color: var(--mute);
+      font-weight: 700
+    }
+
+    label.f input {
+      margin-top: 4px
+    }
+
+    .rush {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0 0;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .rush input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--rush)
+    }
+
+    .res {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1.5px dashed var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      align-items: baseline;
+      justify-content: space-between
+    }
+
+    .tier {
+      font-size: .85rem;
+      color: var(--mute)
+    }
+
+    .tier b {
+      color: var(--ink)
+    }
+
+    .sub-total {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--acc)
+    }
+
+    .pc {
+      font-size: .85rem;
+      color: var(--mute);
+      width: 100%
+    }
+
+    .del {
+      flex: none;
+      border: 0;
+      background: var(--soft);
+      color: var(--mute);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer
+    }
+
+    .add {
+      width: 100%;
+      font: inherit;
+      font-weight: 800;
+      border: 2px dashed var(--acc);
+      background: var(--card);
+      color: var(--acc);
+      border-radius: 14px;
+      padding: 13px;
+      cursor: pointer;
+      margin-bottom: 12px
+    }
+
+    .add:hover {
+      background: var(--soft)
+    }
+
+    .seg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    .seg button {
+      font: inherit;
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      cursor: pointer
+    }
+
+    .seg button[aria-pressed=true] {
+      background: var(--acc);
+      color: var(--acc-ink);
+      border-color: var(--acc)
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 0;
+      border-top: 1px solid var(--line)
+    }
+
+    .row:first-child {
+      border-top: 0
+    }
+
+    .row span:last-child {
+      font-weight: 700;
+      text-align: right
+    }
+
+    .row.big span {
+      font-size: 1.1rem;
+      font-weight: 800
+    }
+
+    .dep {
+      background: var(--soft);
+      border-radius: 12px;
+      padding: 6px 12px;
+      margin-top: 10px
+    }
+
+    .dep .hl {
+      color: var(--acc);
+      font-size: 1.25rem;
+      font-weight: 800
+    }
+
+    .note {
+      font-size: .82rem;
+      color: var(--mute);
+      margin: 6px 0 0
+    }
+
+    .btn {
+      font: inherit;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      border: 0;
+      background: var(--acc);
+      color: var(--acc-ink);
+      width: 100%;
+      margin-top: 12px
+    }
+
+    .btn.alt {
+      background: var(--soft);
+      color: var(--ink)
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px
+    }
+
+    .ov {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: pointer
+    }
+
+    .ov[aria-current=true] {
+      border-color: var(--acc)
+    }
+
+    .ov b {
+      display: block
+    }
+
+    .ov small {
+      color: var(--mute)
+    }
+
+    .ov .amt {
+      text-align: right;
+      font-weight: 800;
+      color: var(--acc);
+      white-space: nowrap
+    }
+
+    .bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--acc);
+      color: var(--acc-ink);
+      padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -4px 18px rgba(0, 0, 0, .18)
+    }
+
+    .bar div {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px
+    }
+
+    .bar small {
+      display: block;
+      opacity: .88;
+      font-weight: 700
+    }
+
+    .bar strong {
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: block
+    }
+
+    details {
+      margin-top: 6px;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 14px
+    }
+
+    summary {
+      font-weight: 800;
+      cursor: pointer
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: .92rem
+    }
+
+    td {
+      padding: 6px 0;
+      border-top: 1px solid var(--line)
+    }
+
+    td:last-child {
+      text-align: right;
+      font-weight: 700
+    }
+
+    textarea.cp {
+      width: 100%;
+      height: 150px;
+      margin-top: 10px;
+      font: inherit;
+      font-size: .85rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      padding: 8px
+    }
+
+    .warn {
+      color: var(--rush)
+    }
+
+    .nm {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end
+    }
+
+    .nm label {
+      flex: 1;
+      min-width: 0
+    }
+
+    .delc {
+      flex: none;
+      font: inherit;
+      font-weight: 800;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--soft);
+      color: var(--ink);
+      padding: 0 12px;
+      height: 44px;
+      cursor: pointer
+    }
+
+    .delc.warn {
+      border-color: var(--rush)
+    }
+
+    .pf {
+      color: var(--acc)
+    }
+
+    [hidden] {
+      display: none !important
+    }
+
+    .st {
+      width: 100%;
+      font: inherit;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 11px;
+      margin-top: 4px;
+      min-width: 0
+    }
+
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px
+    }
+
+    .late {
+      color: var(--rush);
+      font-weight: 800
+    }
+
+    .thm {
+      display: flex;
+      gap: 6px;
+      margin: 0 0 14px
+    }
+
+    .thm button {
+      flex: 1;
+      font: inherit;
+      font-weight: 800;
+      font-size: .85rem;
+      padding: 8px 6px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer
+    }
+
+    .thm button[aria-pressed=true] {
+      background: var(--acc);
+      color: var(--acc-ink);
+      border-color: var(--acc)
+    }
+
+    .own {
+      background: var(--soft);
+      border-radius: 12px;
+      padding: 6px 12px;
+      margin-top: 10px
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>泡芙的拼豆报价计算器</h1>
+    <div class="thm" id="thm" role="group" aria-label="显示模式"><button type="button" data-t="auto">跟随系统</button><button
+        type="button" data-t="light">浅色</button><button type="button" data-t="dark">深色</button></div>
+
+    <div class="tabs" id="tabs" role="group" aria-label="客户"></div>
+
+    <section class="panel nm">
+      <label class="f">客户名称（如：客户1 / 微信名）<input type="text" id="cname" placeholder="客户名称"></label>
+      <button class="delc" id="delC" type="button">删除当前客户</button>
+    </section>
+
+    <section class="panel">
+      <div class="g2">
+        <label class="f">订单状态<select class="st" id="status"></select></label>
+        <label class="f">交货日期<input class="st" type="date" id="due"></label>
+      </div>
+      <p class="note late" id="stNote"></p>
+    </section>
+    <div id="items"></div>
+    <button class="add" id="add" type="button">+ 添加商品</button>
+
+    <section class="panel" aria-labelledby="shipH">
+      <h2 id="shipH">邮费</h2>
+      <div class="seg">
+        <button type="button" id="r0" aria-pressed="true">非偏远地区</button>
+        <button type="button" id="r1" aria-pressed="false">偏远地区</button>
+      </div>
+      <label class="f" id="extraWrap" hidden>补差价（元，沟通后填写）<input type="number" inputmode="decimal" min="0" id="extra"
+          placeholder="0"></label>
+      <p class="note" id="shipNote"></p>
+    </section>
+
+    <section class="panel">
+      <h2>优惠与额外成本</h2>
+      <div class="g2">
+        <label class="f">优惠减免（元，客户可见）<input type="number" inputmode="decimal" min="0" id="disc" placeholder="0"></label>
+        <label class="f">额外成本（元，仅自己可见）<input type="number" inputmode="decimal" min="0" id="xcost"
+            placeholder="包装费、拼豆板等"></label>
+      </div>
+      <label class="rush" style="margin-top:12px"><input type="checkbox" id="roundCk" checked> 抹零，去掉小数（如 100.94 →
+        100）</label>
+      <p class="note">优惠从商品合计里扣除，定金会跟着重算；邮费仍按优惠前的商品合计判断。抹零是对最后应付总额去掉小数。额外成本只用来算利润。</p>
+    </section>
+
+    <section class="panel" aria-labelledby="sumH">
+      <h2 id="sumH">本客户汇总</h2>
+      <div class="row"><span>商品合计</span><span id="goods">¥0.00</span></div>
+      <div class="row"><span>邮费</span><span id="ship">¥0.00</span></div>
+      <div class="row" id="preRow" hidden><span>优惠前合计</span><span id="preV">¥0.00</span></div>
+      <div class="row" id="discRow" hidden><span>优惠减免</span><span id="discV">-¥0.00</span></div>
+      <div class="row" id="rndRow" hidden><span>抹零</span><span id="rndV">-¥0.00</span></div>
+      <div class="row big"><span>应付总额</span><span id="grand">¥0.00</span></div>
+      <div class="dep">
+        <div class="row"><span>需付定金（50%）</span><span class="hl" id="dep">¥0.00</span></div>
+        <div class="row"><span>剩余尾款</span><span id="bal">¥0.00</span></div>
+        <div class="row"><span>目前待收（按订单状态）</span><span id="owe">¥0.00</span></div>
+      </div>
+      <div class="own">
+        <div class="row"><span>豆子成本</span><span id="cost">¥0.00</span></div>
+        <div class="row"><span>额外成本</span><span id="xc">¥0.00</span></div>
+        <div class="row"><span>利润（不含邮费）</span><span class="pf" id="profit">¥0.00</span></div>
+      </div>
+      <p class="note">成本和利润只有你自己看得到，不会出现在报价单里。</p>
+      <button class="btn" id="copy" type="button">复制本客户报价单</button>
+      <button class="btn alt" id="mkImg" type="button">生成报价图</button>
+      <div id="imgBox" hidden><img id="qimg" alt="报价单图片"
+          style="width:100%;height:auto;border-radius:12px;margin-top:12px;display:block">
+        <div class="two"><button class="btn alt" id="shareImg" type="button">分享图片</button><button class="btn alt"
+            id="copyImg" type="button">复制图片</button></div>
+        <p class="note" id="imgMsg" aria-live="polite">“分享图片”只会发送图片，不带网址。修改订单后需要重新生成。</p>
+      </div>
+      <textarea class="cp" id="cpbox" hidden readonly aria-label="报价单文字"></textarea>
+      <p class="note" id="cpmsg" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="ovH">
+      <h2 id="ovH">全部客户总览</h2>
+      <div id="ov"></div>
+      <div class="row big"><span>全部应付总额</span><span id="aGrand">¥0.00</span></div>
+      <div class="row"><span>全部定金合计</span><span id="aDep">¥0.00</span></div>
+      <div class="row"><span>全部尾款合计</span><span id="aBal">¥0.00</span></div>
+      <div class="row big"><span>目前待收款合计</span><span id="aOwe">¥0.00</span></div>
+      <div class="row"><span>全部豆子成本</span><span id="aCost">¥0.00</span></div>
+      <div class="row big"><span>全部利润（不含邮费）</span><span class="pf" id="aProfit">¥0.00</span></div>
+      <button class="btn alt" id="copyAll" type="button">复制总览</button>
+      <p class="note">订单会自动保存在这台设备的浏览器里。总览按交货日期从近到远排列。</p>
+    </section>
+
+    <section class="panel">
+      <h2>备份与恢复</h2>
+      <p class="note" style="margin-top:0">点“生成备份”后复制文字，保存到备忘录或发给自己。换手机时把文字粘贴到下面，点“导入备份”即可恢复。</p>
+      <textarea class="cp" id="bk" aria-label="备份文字" placeholder="备份文字显示在这里，或把备份粘贴到这里"></textarea>
+      <div class="two">
+        <button class="btn alt" id="bkMake" type="button">生成备份</button>
+        <button class="btn alt" id="bkLoad" type="button">导入备份</button>
+      </div>
+      <p class="note" id="bkMsg" aria-live="polite"></p>
+    </section>
+
+    <details>
+      <summary>价格表（元/颗）</summary>
+      <table>
+        <tr>
+          <td>普通豆（20色以内）</td>
+          <td>0.01</td>
+        </tr>
+        <tr>
+          <td>色号复杂（20色到60色）</td>
+          <td>0.015</td>
+        </tr>
+        <tr>
+          <td>色号复杂（60色以上）</td>
+          <td>0.02</td>
+        </tr>
+        <tr>
+          <td>加急订单</td>
+          <td>0.02</td>
+        </tr>
+        <tr>
+          <td>色号复杂 + 加急</td>
+          <td>0.03</td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td>非偏远地区</td>
+          <td>8元</td>
+        </tr>
+        <tr>
+          <td>满30元</td>
+          <td>半包邮（4元）</td>
+        </tr>
+        <tr>
+          <td>满50元</td>
+          <td>全包邮</td>
+        </tr>
+        <tr>
+          <td>偏远地区</td>
+          <td>需补差价，具体沟通</td>
+        </tr>
+      </table>
+      <p class="note">20色及以下算普通豆；超过20色且加急，统一按 0.03元/颗。半包邮按邮费减半（4元），按商品合计判断是否满额。</p>
+    </details>
+    <details>
+      <summary>成本设置</summary>
+      <label class="f" style="margin-top:10px">每 100g（约 10000 颗）豆子成本（元）<input type="number" inputmode="decimal" min="0"
+          step="0.1" id="costIn"></label>
+      <p class="note" id="costNote"></p>
+      <p class="note">利润 = 商品合计 − 优惠 − 豆子成本 − 额外成本，不含邮费。</p>
+    </details>
+  </main>
+  <div class="bar">
+    <div>
+      <span><small id="bname">客户1</small><small id="beads">0 颗</small></span>
+      <span style="text-align:right"><small>应付总额</small><strong id="total">¥0.00</strong></span>
+      <span style="text-align:right"><small>50%定金</small><strong id="total2">¥0.00</strong></span>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var cols = ['#ff8fab', '#ffb86b', '#ffe066', '#7bd88f', '#6ec6ff', '#b69cff', '#ff7eb6'];
+
+      function ring(cx, cy, r, h) {
+        return 'M' + (cx - r) + ' ' + cy + 'a' + r + ' ' + r + ' 0 1 0 ' + (2 * r) + ' 0a' + r + ' ' + r + ' 0 1 0 ' +
+          (-2 * r) + ' 0M' + (cx - h) + ' ' + cy + 'a' + h + ' ' + h + ' 0 1 0 ' + (2 * h) + ' 0a' + h + ' ' + h +
+          ' 0 1 0 ' + (-2 * h) + ' 0z'
+      }
+
+      function make(op) {
+        var s = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">';
+        for (var y = 0; y < 4; y++)
+          for (var x = 0; x < 4; x++) {
+            var cx = 15 + x * 30,
+              cy = 15 + y * 30,
+              v = (x * 7 + y * 13 + x * y * 5) % 11;
+            if (v < 3) s += '<circle cx="' + cx + '" cy="' + cy + '" r="3" fill="#8a80b8" fill-opacity="' + (op *
+              0.35) + '"/>';
+            else s += '<path fill-rule="evenodd" fill="' + cols[(x * 3 + y * 5 + v) % cols.length] +
+              '" fill-opacity="' + op + '" d="' + ring(cx, cy, 11, 4) + '"/>';
+          }
+        return 'url("data:image/svg+xml,' + encodeURIComponent(s + '</svg>') + '")';
+      }
+      var st = document.documentElement.style;
+      st.setProperty('--pat-l', make(0.35));
+      st.setProperty('--pat-d', make(0.2));
+    })();
+    var KEY = 'bead-calc-v3',
+      S = null,
+      delArm = false,
+      bkArm = false;
+    var STAT = ['待收定金', '定金已收', '制作中', '已发图确认', '尾款已收', '已发货'];
+
+    function newItem() {
+      return {
+        id: S.nid++,
+        name: '',
+        beads: '',
+        colors: '',
+        qty: 1,
+        rush: false
+      }
+    }
+
+    function newCust() {
+      var c = {
+        id: S.cid++,
+        name: '',
+        remote: false,
+        extra: '',
+        status: 0,
+        due: '',
+        disc: '',
+        xcost: '',
+        items: []
+      };
+      c.items.push(newItem());
+      return c
+    }
+
+    function init() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (raw) {
+          var p = JSON.parse(raw);
+          if (p && p.cs && p.cs.length) {
+            S = p
+          }
+        }
+      } catch (e) {}
+      if (!S) {
+        S = {
+          cs: [],
+          cur: 0,
+          nid: 1,
+          cid: 1
+        };
+        var c = newCust();
+        S.cs.push(c);
+        S.cur = c.id
+      }
+      if (S.cost == null) S.cost = 7;
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(S))
+      } catch (e) {}
+    }
+
+    function cur() {
+      return S.cs.find(function (c) {
+        return c.id === S.cur
+      }) || S.cs[0]
+    }
+
+    function cname(c) {
+      return c.name.trim() || ('客户' + (S.cs.indexOf(c) + 1))
+    }
+
+    function rate(c, rush) {
+      if (c > 20) return rush ? 0.03 : (c > 60 ? 0.02 : 0.015);
+      return rush ? 0.02 : 0.01
+    }
+
+    function tierName(c, rush) {
+      var t = c > 60 ? '色号复杂（60色以上）' : c > 20 ? '色号复杂（20–60色）' : '普通豆（20色以内）';
+      return rush ? t + ' + 加急' : t
+    }
+
+    function r2(n) {
+      return Math.round(n * 100) / 100
+    }
+
+    function money(n) {
+      return '¥' + r2(n).toFixed(2)
+    }
+
+    function calcItem(it) {
+      var b = +it.beads || 0,
+        c = +it.colors || 0,
+        q = +it.qty || 0,
+        r = rate(c, it.rush),
+        per = b * r;
+      return {
+        r: r,
+        per: per,
+        sub: per * q,
+        b: b * q,
+        c: c,
+        has: b > 0 && it.colors !== ''
+      }
+    }
+
+    function totals(c) {
+      var goods = 0,
+        beads = 0;
+      c.items.forEach(function (it) {
+        var x = calcItem(it);
+        goods += x.sub;
+        beads += x.b
+      });
+      goods = r2(goods);
+      var base = 0,
+        note = '添加商品后自动计算。',
+        extra = +c.extra || 0;
+      if (goods > 0) {
+        base = goods >= 50 ? 0 : goods >= 30 ? 4 : 8;
+        if (c.remote) note = '偏远地区需补差价，具体沟通。基础邮费 ' + money(base) + ' + 补差价 ' + money(extra) + '。';
+        else if (goods >= 50) note = '满50元，全包邮。';
+        else if (goods >= 30) note = '满30元，半包邮（邮费 4 元）。再买 ' + money(50 - goods) + ' 即可全包邮。';
+        else note = '邮费 8 元。再买 ' + money(30 - goods) + ' 可享半包邮。';
+      }
+      var disc = Math.min(+c.disc || 0, goods),
+        ship = goods > 0 ? base + (c.remote ? extra : 0) : 0,
+        pre = r2(goods + ship),
+        after = r2(goods - disc + ship),
+        rnd = (c.round !== false && goods > 0) ? r2(after - Math.floor(after + 1e-9)) : 0,
+        grand = r2(after - rnd),
+        dep = r2(grand / 2);
+      var cost = beads * (+S.cost || 0) / 10000,
+        xc = goods > 0 ? (+c.xcost || 0) : 0,
+        st = c.status || 0,
+        paid = st >= 4 ? grand : st >= 1 ? dep : 0;
+      return {
+        goods: goods,
+        disc: disc,
+        pre: pre,
+        rnd: rnd,
+        ship: ship,
+        grand: grand,
+        dep: dep,
+        bal: r2(grand - dep),
+        beads: beads,
+        note: note,
+        cost: cost,
+        xc: xc,
+        profit: goods > 0 ? goods - disc - rnd - cost - xc : 0,
+        owe: r2(grand - paid)
+      }
+    }
+
+    function dueInfo(c) {
+      if (!c.due || (c.status || 0) >= 5) return '';
+      var d = new Date(c.due + 'T00:00:00'),
+        n = new Date();
+      n.setHours(0, 0, 0, 0);
+      var diff = Math.round((d - n) / 86400000);
+      return diff < 0 ? '已超过交货日期 ' + (-diff) + ' 天' : diff === 0 ? '今天交货' : diff <= 3 ? '还有 ' + diff + ' 天交货' : '';
+    }
+
+    function renderTabs() {
+      var t = document.getElementById('tabs');
+      t.innerHTML = '';
+      S.cs.forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tab';
+        b.textContent = cname(c);
+        b.setAttribute('aria-pressed', String(c.id === S.cur));
+        b.dataset.id = c.id;
+        t.appendChild(b);
+      });
+      var p = document.createElement('button');
+      p.type = 'button';
+      p.className = 'tab plus';
+      p.id = 'addC';
+      p.textContent = '+ 新客户';
+      t.appendChild(p);
+    }
+
+    function renderItems(focusLast) {
+      var c = cur(),
+        box = document.getElementById('items');
+      box.innerHTML = '';
+      c.items.forEach(function (it, i) {
+        var d = document.createElement('div');
+        d.className = 'item';
+        d.dataset.id = it.id;
+        d.innerHTML = '<div class="top"><input type="text" data-k="name" placeholder="商品' + (i + 1) +
+          '名称（选填）" aria-label="商品名称"><button class="del" type="button" aria-label="删除商品">✕</button></div>' +
+          '<div class="grid">' +
+          '<label class="f">每件豆数<input type="number" inputmode="numeric" min="0" data-k="beads" placeholder="如 800"></label>' +
+          '<label class="f">颜色数<input type="number" inputmode="numeric" min="0" data-k="colors" placeholder="如 15"></label>' +
+          '<label class="f">数量<input type="number" inputmode="numeric" min="1" data-k="qty"></label></div>' +
+          '<label class="rush"><input type="checkbox" data-k="rush"> 加急订单</label>' +
+          '<div class="res"><span class="tier"></span><span class="sub-total"></span><span class="pc"></span></div>';
+        d.querySelector('[data-k=name]').value = it.name;
+        d.querySelector('[data-k=beads]').value = it.beads;
+        d.querySelector('[data-k=colors]').value = it.colors;
+        d.querySelector('[data-k=qty]').value = it.qty;
+        d.querySelector('[data-k=rush]').checked = it.rush;
+        box.appendChild(d);
+      });
+      document.getElementById('cname').value = c.name;
+      document.getElementById('extra').value = c.extra;
+      document.getElementById('status').value = c.status || 0;
+      document.getElementById('due').value = c.due || '';
+      document.getElementById('disc').value = c.disc || '';
+      document.getElementById('xcost').value = c.xcost || '';
+      document.getElementById('roundCk').checked = c.round !== false;
+      setRemoteUI(c.remote);
+      update();
+      if (focusLast) {
+        var l = box.lastElementChild;
+        if (l) {
+          l.querySelector('input').focus();
+          l.scrollIntoView({
+            block: 'center'
+          })
+        }
+      }
+    }
+
+    function setRemoteUI(v) {
+      document.getElementById('r0').setAttribute('aria-pressed', String(!v));
+      document.getElementById('r1').setAttribute('aria-pressed', String(v));
+      document.getElementById('extraWrap').hidden = !v;
+    }
+
+    function update() {
+      var c = cur();
+      document.querySelectorAll('.item').forEach(function (d) {
+        var it = c.items.find(function (x) {
+          return x.id == d.dataset.id
+        });
+        var x = calcItem(it);
+        d.querySelector('.tier').innerHTML = x.has ? '<b>' + tierName(x.c, it.rush) + '</b> · ' + x.r + ' 元/颗' :
+          '请输入豆数和颜色数';
+        d.querySelector('.sub-total').textContent = x.has ? money(x.sub) : '¥0.00';
+        d.querySelector('.pc').textContent = x.has ? ('单件：' + money(x.per) + ' × ' + (+it.qty || 0) + ' 件 = ' +
+          money(x.sub)) : '';
+      });
+      var t = totals(c);
+      document.getElementById('goods').textContent = money(t.goods);
+      document.getElementById('ship').textContent = t.goods > 0 && t.ship === 0 ? '免邮' : money(t.ship);
+      document.getElementById('grand').textContent = money(t.grand);
+      document.getElementById('dep').textContent = money(t.dep);
+      document.getElementById('bal').textContent = money(t.bal);
+      document.getElementById('discRow').hidden = !(t.disc > 0);
+      document.getElementById('preRow').hidden = !(t.disc > 0 || t.rnd > 0);
+      document.getElementById('preV').textContent = money(t.pre);
+      document.getElementById('rndRow').hidden = !(t.rnd > 0);
+      document.getElementById('rndV').textContent = '-' + money(t.rnd);
+      document.getElementById('discV').textContent = '-' + money(t.disc);
+      document.getElementById('xc').textContent = money(t.xc);
+      document.getElementById('owe').textContent = money(t.owe);
+      document.getElementById('stNote').textContent = dueInfo(c);
+      document.getElementById('imgBox').hidden = true;
+      document.getElementById('cost').textContent = money(t.cost);
+      document.getElementById('profit').textContent = money(t.profit);
+      document.getElementById('costNote').textContent = '每颗约 ' + ((+S.cost || 0) / 10000).toFixed(5).replace(/0+$/,
+        '') + ' 元';
+      document.getElementById('shipNote').textContent = t.note;
+      document.getElementById('total').textContent = money(t.grand);
+      document.getElementById('total2').textContent = money(t.dep);
+      document.getElementById('bname').textContent = cname(c);
+      document.getElementById('beads').textContent = t.beads.toLocaleString() + ' 颗';
+      renderOv();
+      save();
+    }
+
+    function renderOv() {
+      var ov = document.getElementById('ov');
+      ov.innerHTML = '';
+      var G = 0,
+        D = 0,
+        B = 0,
+        C = 0,
+        P = 0,
+        O = 0;
+      S.cs.slice().sort(function (a, b) {
+        var x = a.due || '9999',
+          y = b.due || '9999';
+        return x < y ? -1 : x > y ? 1 : 0
+      }).forEach(function (c) {
+        var t = totals(c);
+        G += t.grand;
+        D += t.dep;
+        B += t.bal;
+        C += t.cost;
+        P += t.profit;
+        O += t.owe;
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ov';
+        b.dataset.id = c.id;
+        if (c.id === S.cur) b.setAttribute('aria-current', 'true');
+        var n = c.items.filter(function (i) {
+          return calcItem(i).has
+        }).length;
+        b.innerHTML = '<span><b></b><small>' + STAT[c.status || 0] + ' · ' + n + ' 件商品' + (c.due ? ' · 交货 ' + c.due
+            .slice(5) : '') + '</small></span><span class="amt">' + money(t.grand) +
+          '<small style="display:block;font-weight:700">待收 ' + money(t.owe) + '</small></span>';
+        b.querySelector('b').textContent = cname(c);
+        ov.appendChild(b);
+      });
+      document.getElementById('aGrand').textContent = money(G);
+      document.getElementById('aDep').textContent = money(D);
+      document.getElementById('aBal').textContent = money(B);
+      document.getElementById('aOwe').textContent = money(O);
+      document.getElementById('aCost').textContent = money(C);
+      document.getElementById('aProfit').textContent = money(P);
+      var tabs = document.querySelectorAll('.tab[data-id]');
+      tabs.forEach(function (b) {
+        var c = S.cs.find(function (x) {
+          return x.id == b.dataset.id
+        });
+        if (c) b.textContent = cname(c)
+      });
+    }
+
+    function quote(c) {
+      var t = totals(c),
+        L = ['【' + cname(c) + ' 报价单】'],
+        i = 0;
+      c.items.forEach(function (it) {
+        var x = calcItem(it);
+        if (!x.has) return;
+        i++;
+        L.push(i + '. ' + (it.name.trim() || '商品' + i) + '：' + (+it.beads) + '颗 × ' + x.c + '色' + (it.rush ?
+          '（加急）' : '') + '，' + x.r + '元/颗，单件 ' + money(x.per) + ' × ' + (+it.qty || 0) + '件 = ' + money(x.sub));
+      });
+      L.push('');
+      L.push('商品合计：' + money(t.goods));
+      L.push('邮费：' + (t.goods > 0 && t.ship === 0 && !c.remote ? '免邮' : money(t.ship)) + (c.remote ? '（偏远地区，含补差价）' :
+        ''));
+      if (t.disc > 0 || t.rnd > 0) L.push('优惠前合计：' + money(t.pre));
+      if (t.disc > 0) L.push('优惠减免：-' + money(t.disc));
+      if (t.rnd > 0) L.push('抹零：-' + money(t.rnd));
+      L.push('应付总额：' + money(t.grand));
+      L.push('50%定金：' + money(t.dep));
+      L.push('剩余尾款：' + money(t.bal));
+      return L.join('\n');
+    }
+
+    function overviewText() {
+      var L = ['【全部客户总览】'],
+        G = 0,
+        D = 0,
+        B = 0;
+      S.cs.forEach(function (c) {
+        var t = totals(c);
+        G += t.grand;
+        D += t.dep;
+        B += t.bal;
+        L.push(cname(c) + '：总额 ' + money(t.grand) + '，定金 ' + money(t.dep) + '，尾款 ' + money(t.bal))
+      });
+      L.push('');
+      L.push('合计总额：' + money(G));
+      L.push('定金合计：' + money(D));
+      L.push('尾款合计：' + money(B));
+      return L.join('\n');
+    }
+
+    function copyText(text) {
+      var box = document.getElementById('cpbox'),
+        msg = document.getElementById('cpmsg');
+
+      function fallback() {
+        box.hidden = false;
+        box.value = text;
+        box.focus();
+        box.select();
+        var ok = false;
+        try {
+          ok = document.execCommand('copy')
+        } catch (e) {}
+        msg.textContent = ok ? '已复制，可以直接粘贴发给客户。' : '没能自动复制，请长按上面的文字手动复制。';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          box.hidden = false;
+          box.value = text;
+          msg.textContent = '已复制，可以直接粘贴发给客户。'
+        }, fallback);
+      } else fallback();
+    }
+    document.getElementById('copy').onclick = function () {
+      copyText(quote(cur()))
+    };
+    document.getElementById('copyAll').onclick = function () {
+      copyText(overviewText())
+    };
+
+    function switchTo(id) {
+      S.cur = +id;
+      delArm = false;
+      document.getElementById('delC').textContent = '删除当前客户';
+      document.getElementById('cpbox').hidden = true;
+      document.getElementById('cpmsg').textContent = '';
+      renderTabs();
+      renderItems();
+      window.scrollTo(0, 0)
+    }
+    document.getElementById('tabs').addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      if (b.id === 'addC') {
+        var c = newCust();
+        S.cs.push(c);
+        switchTo(c.id);
+        document.getElementById('cname').focus()
+      } else if (b.dataset.id) switchTo(b.dataset.id);
+    });
+    document.getElementById('ov').addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (b) switchTo(b.dataset.id)
+    });
+    document.getElementById('cname').addEventListener('input', function (e) {
+      cur().name = e.target.value;
+      update()
+    });
+    document.getElementById('extra').addEventListener('input', function (e) {
+      cur().extra = e.target.value;
+      update()
+    });
+    document.getElementById('status').addEventListener('change', function (e) {
+      cur().status = +e.target.value;
+      update()
+    });
+    document.getElementById('due').addEventListener('input', function (e) {
+      cur().due = e.target.value;
+      update()
+    });
+    document.getElementById('disc').addEventListener('input', function (e) {
+      cur().disc = e.target.value;
+      update()
+    });
+    document.getElementById('roundCk').addEventListener('change', function (e) {
+      cur().round = e.target.checked;
+      update()
+    });
+    document.getElementById('xcost').addEventListener('input', function (e) {
+      cur().xcost = e.target.value;
+      update()
+    });
+    document.getElementById('r0').onclick = function () {
+      cur().remote = false;
+      setRemoteUI(false);
+      update()
+    };
+    document.getElementById('r1').onclick = function () {
+      cur().remote = true;
+      setRemoteUI(true);
+      update()
+    };
+    document.getElementById('items').addEventListener('input', function (e) {
+      var d = e.target.closest('.item');
+      if (!d) return;
+      var it = cur().items.find(function (x) {
+          return x.id == d.dataset.id
+        }),
+        k = e.target.dataset.k;
+      it[k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      update();
+    });
+    document.getElementById('items').addEventListener('click', function (e) {
+      if (!e.target.classList.contains('del')) return;
+      var c = cur(),
+        id = e.target.closest('.item').dataset.id;
+      c.items = c.items.filter(function (x) {
+        return x.id != id
+      });
+      if (!c.items.length) c.items.push(newItem());
+      renderItems();
+    });
+    document.getElementById('add').onclick = function () {
+      cur().items.push(newItem());
+      renderItems(true)
+    };
+    document.getElementById('delC').onclick = function () {
+      var b = document.getElementById('delC');
+      if (!delArm) {
+        delArm = true;
+        b.textContent = '再点一次确认删除';
+        b.classList.add('warn');
+        return
+      }
+      delArm = false;
+      b.classList.remove('warn');
+      b.textContent = '删除当前客户';
+      S.cs = S.cs.filter(function (c) {
+        return c.id !== S.cur
+      });
+      if (!S.cs.length) S.cs.push(newCust());
+      switchTo(S.cs[0].id);
+    };
+    init();
+    document.getElementById('costIn').value = S.cost;
+    document.getElementById('costIn').addEventListener('input', function (e) {
+      S.cost = e.target.value;
+      update()
+    });
+    STAT.forEach(function (s, i) {
+      var o = document.createElement('option');
+      o.value = i;
+      o.textContent = s;
+      document.getElementById('status').appendChild(o)
+    });
+    document.getElementById('bkMake').onclick = function () {
+      var b = document.getElementById('bk');
+      b.value = JSON.stringify(S);
+      b.focus();
+      b.select();
+      var ok = false;
+      try {
+        ok = document.execCommand('copy')
+      } catch (e) {}
+      document.getElementById('bkMsg').textContent = ok ? '备份已生成并复制，请保存到备忘录。' : '备份已生成，请长按文字全选复制并保存。';
+    };
+    document.getElementById('bkLoad').onclick = function () {
+      var btn = document.getElementById('bkLoad'),
+        msg = document.getElementById('bkMsg'),
+        p;
+      try {
+        p = JSON.parse(document.getElementById('bk').value)
+      } catch (e) {}
+      if (!p || !p.cs || !p.cs.length || !p.cs[0].items) {
+        msg.textContent = '备份文字不正确，请确认完整粘贴。';
+        return
+      }
+      if (!bkArm) {
+        bkArm = true;
+        btn.textContent = '会覆盖现有订单，再点确认';
+        msg.textContent = '';
+        return
+      }
+      bkArm = false;
+      btn.textContent = '导入备份';
+      S = p;
+      if (S.cost == null) S.cost = 7;
+      S.cur = S.cs[0].id;
+      document.getElementById('costIn').value = S.cost;
+      renderTabs();
+      renderItems();
+      msg.textContent = '已导入备份。';
+    };
+
+    function applyTheme(t) {
+      var r = document.documentElement;
+      if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+      else r.removeAttribute('data-theme');
+      document.querySelectorAll('#thm button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.t === (t || 'auto')))
+      });
+    }
+    var th = 'auto';
+    try {
+      th = localStorage.getItem('bead-theme') || 'auto'
+    } catch (e) {}
+    applyTheme(th);
+    document.getElementById('thm').addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      th = b.dataset.t;
+      applyTheme(th);
+      try {
+        localStorage.setItem('bead-theme', th)
+      } catch (err) {}
+    });
+
+    function rr(x, a, b, w, h, r) {
+      x.beginPath();
+      x.moveTo(a + r, b);
+      x.arcTo(a + w, b, a + w, b + h, r);
+      x.arcTo(a + w, b + h, a, b + h, r);
+      x.arcTo(a, b + h, a, b, r);
+      x.arcTo(a, b, a + w, b, r);
+      x.closePath()
+    }
+
+    function beadRow(x, y, W, bg) {
+      var cols = ['#ff8fab', '#ffb86b', '#ffe066', '#7bd88f', '#6ec6ff', '#b69cff', '#ff7eb6'],
+        n = Math.floor((W - 40) / 36),
+        off = (W - (n - 1) * 36) / 2;
+      for (var i = 0; i < n; i++) {
+        var cx = off + i * 36;
+        x.fillStyle = cols[i % cols.length];
+        x.beginPath();
+        x.arc(cx, y, 13, 0, 7);
+        x.fill();
+        x.fillStyle = bg;
+        x.beginPath();
+        x.arc(cx, y, 5, 0, 7);
+        x.fill()
+      }
+    }
+
+    function fit(x, s, w) {
+      if (x.measureText(s).width <= w) return s;
+      while (s.length > 1 && x.measureText(s + '…').width > w) s = s.slice(0, -1);
+      return s + '…'
+    }
+
+    function drawQuote(c) {
+      var t = totals(c),
+        rows = [],
+        i = 0;
+      c.items.forEach(function (it) {
+        var q = calcItem(it);
+        if (!q.has) return;
+        i++;
+        rows.push({
+          n: it.name.trim() || '商品' + i,
+          d: (+it.beads) + '颗 · ' + q.c + '色 · ' + q.r + '元/颗' + (it.rush ? ' · 加急' : '') + ' · ' + (+it.qty ||
+            0) + '件',
+          s: money(q.sub)
+        })
+      });
+      if (!rows.length) return null;
+      var W = 750,
+        L = 62,
+        R = W - 62,
+        F = '"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif';
+      var lines = [
+        ['商品合计', money(t.goods)]
+      ];
+      lines.push([c.remote ? '邮费（偏远地区，含补差价）' : '邮费', (!c.remote && t.ship === 0) ? '免邮' : money(t.ship)]);
+      if (t.disc > 0 || t.rnd > 0) lines.push(['优惠前合计', money(t.pre)]);
+      if (t.disc > 0) lines.push(['优惠减免', '-' + money(t.disc)]);
+      if (t.rnd > 0) lines.push(['抹零', '-' + money(t.rnd)]);
+      var cardH = 30 + rows.length * 104 + 16 + lines.length * 52 + 70 + 20 + 130 + 30,
+        y0 = 240,
+        H = y0 + cardH + 30 + 40 + 50 + 20;
+      var cv = document.createElement('canvas');
+      cv.width = W;
+      cv.height = H;
+      var x = cv.getContext('2d');
+      x.fillStyle = '#f1edfb';
+      x.fillRect(0, 0, W, H);
+      x.fillStyle = '#6b4fd8';
+      x.fillRect(0, 0, W, 170);
+      x.fillStyle = '#fff';
+      x.textAlign = 'center';
+      x.font = 'bold 52px ' + F;
+      x.fillText('泡芙的拼豆', W / 2, 82);
+      x.font = '30px ' + F;
+      x.fillText(fit(x, cname(c) + ' 报价单', W - 80), W / 2, 134);
+      beadRow(x, 205, W, '#f1edfb');
+      x.fillStyle = '#fff';
+      rr(x, 30, y0, W - 60, cardH, 24);
+      x.fill();
+      var y = y0 + 30;
+      x.textAlign = 'left';
+      rows.forEach(function (r) {
+        x.fillStyle = '#2e2357';
+        x.font = 'bold 32px ' + F;
+        x.fillText(fit(x, r.n, 420), L, y + 34);
+        x.fillStyle = '#5f5985';
+        x.font = '24px ' + F;
+        x.fillText(fit(x, r.d, 430), L, y + 72);
+        x.fillStyle = '#2e2357';
+        x.font = 'bold 32px ' + F;
+        x.textAlign = 'right';
+        x.fillText(r.s, R, y + 44);
+        x.textAlign = 'left';
+        x.fillStyle = '#e4def5';
+        x.fillRect(L, y + 92, R - L, 2);
+        y += 104;
+      });
+      y += 16;
+      lines.forEach(function (l) {
+        x.fillStyle = '#5f5985';
+        x.font = '28px ' + F;
+        x.fillText(l[0], L, y + 34);
+        x.fillStyle = '#2e2357';
+        x.textAlign = 'right';
+        x.fillText(l[1], R, y + 34);
+        x.textAlign = 'left';
+        y += 52;
+      });
+      x.fillStyle = '#2e2357';
+      x.font = 'bold 34px ' + F;
+      x.fillText('应付总额', L, y + 46);
+      x.fillStyle = '#6b4fd8';
+      x.font = 'bold 42px ' + F;
+      x.textAlign = 'right';
+      x.fillText(money(t.grand), R, y + 46);
+      x.textAlign = 'left';
+      y += 70 + 20;
+      x.fillStyle = '#ebe5fa';
+      rr(x, L - 16, y, R - L + 32, 130, 18);
+      x.fill();
+      x.fillStyle = '#6b4fd8';
+      x.font = 'bold 32px ' + F;
+      x.fillText('50% 定金', L, y + 54);
+      x.textAlign = 'right';
+      x.fillText(money(t.dep), R, y + 54);
+      x.textAlign = 'left';
+      x.fillStyle = '#5f5985';
+      x.font = '28px ' + F;
+      x.fillText('剩余尾款', L, y + 102);
+      x.textAlign = 'right';
+      x.fillText(money(t.bal), R, y + 102);
+      x.textAlign = 'center';
+      x.fillStyle = '#5f5985';
+      x.font = '24px ' + F;
+      x.fillText('确认后付定金开始制作', W / 2, y0 + cardH + 30 + 30);
+      beadRow(x, y0 + cardH + 30 + 40 + 25, W, '#f1edfb');
+      return cv;
+    }
+    var qblob = null;
+
+    function imgFail(m) {
+      document.getElementById('imgMsg').textContent = m
+    }
+    var SAVEHINT = '这里不能直接分享，请长按图片选“保存图片”，再从相册发送，就不会带网址。';
+    document.getElementById('shareImg').onclick = function () {
+      if (!qblob) return;
+      var f = new File([qblob], 'quote.png', {
+        type: 'image/png'
+      });
+      if (navigator.canShare && navigator.canShare({
+          files: [f]
+        })) {
+        navigator.share({
+          files: [f]
+        }).catch(function (e) {
+          if (!e || e.name !== 'AbortError') imgFail(SAVEHINT)
+        });
+      } else imgFail(SAVEHINT);
+    };
+    document.getElementById('copyImg').onclick = function () {
+      if (!qblob) return;
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({
+          'image/png': qblob
+        })]).then(function () {
+          imgFail('图片已复制，可以直接粘贴发送。')
+        }, function () {
+          imgFail('这里不能复制图片，请长按图片选“保存图片”，再从相册发送。')
+        });
+      } else imgFail('这里不能复制图片，请长按图片选“保存图片”，再从相册发送。');
+    };
+    document.getElementById('mkImg').onclick = function () {
+      var cv = drawQuote(cur()),
+        msg = document.getElementById('cpmsg');
+      if (!cv) {
+        msg.textContent = '请先填写至少一个商品。';
+        return
+      }
+      msg.textContent = '';
+      var im = document.getElementById('qimg');
+      im.src = cv.toDataURL('image/png');
+      qblob = null;
+      cv.toBlob(function (b) {
+        qblob = b
+      }, 'image/png');
+      imgFail('“分享图片”只会发送图片，不带网址。修改订单后需要重新生成。');
+      var bx = document.getElementById('imgBox');
+      bx.hidden = false;
+      bx.scrollIntoView({
+        block: 'nearest'
+      });
+    };
+    renderTabs();
+    renderItems();
+  </script>
 </body>
+
 </html>
