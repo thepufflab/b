@@ -105,10 +105,40 @@ textarea.cp{width:100%;height:150px;margin-top:10px;font:inherit;font-size:.85re
 .thm button{flex:1;font:inherit;font-weight:800;font-size:.85rem;padding:8px 6px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
 .thm button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
 .own{background:var(--soft);border-radius:12px;padding:6px 12px;margin-top:10px}
+
+/* ===== 泡芙 mascot ===== */
+#puff{position:fixed;top:0;right:calc(2px + env(safe-area-inset-right,0px));width:72px;height:72px;pointer-events:none;z-index:20;will-change:transform;transform:translate3d(0,-200px,0)}
+#puff svg{width:100%;height:100%;display:block;overflow:visible}
+#puff .eye{transform-box:fill-box;transform-origin:center;animation:pblink 4.2s infinite}
+#puff .arm{transform-box:fill-box;transform-origin:50% 20%}
+@keyframes pblink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@media (max-width:480px){#puff{width:60px;height:60px;right:0}}
+@media (prefers-reduced-motion:reduce){#puff .eye{animation:none}}
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="829ed850-0010-42b0-bd16-2cbb7e170651"></script>
 </head>
 <body>
+<div id="puff" aria-hidden="true">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<ellipse id="pshadow" cx="50" cy="94" rx="24" ry="4" fill="#000" opacity=".16"/>
+<ellipse cx="38" cy="90" rx="8" ry="5" fill="#e9a94f" stroke="#7a4b24" stroke-width="2.5"/>
+<ellipse cx="62" cy="90" rx="8" ry="5" fill="#e9a94f" stroke="#7a4b24" stroke-width="2.5"/>
+<g class="arm" id="parmL"><ellipse cx="14" cy="62" rx="6" ry="9" fill="#f2b95e" stroke="#7a4b24" stroke-width="2.5" transform="rotate(20 14 62)"/></g>
+<g class="arm" id="parmR"><ellipse cx="86" cy="62" rx="6" ry="9" fill="#f2b95e" stroke="#7a4b24" stroke-width="2.5" transform="rotate(-20 86 62)"/></g>
+<path d="M16 62C11 32 32 14 52 16C76 16 92 36 85 64C82 82 66 90 50 90C32 90 19 82 16 62Z" fill="#f6c46c" stroke="#7a4b24" stroke-width="3" stroke-linejoin="round"/>
+<path d="M26 44C28 32 38 24 48 23" fill="none" stroke="#fff3cf" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+<path d="M27 37C32 24 68 21 76 35C72 43 67 38 63 45C59 50 55 41 51 46C47 50 43 41 39 46C34 44 31 42 27 37Z" fill="#fffaf0" stroke="#7a4b24" stroke-width="2.5" stroke-linejoin="round"/>
+<circle cx="44" cy="31" r="1.8" fill="#ff8fab"/><circle cx="57" cy="29" r="1.8" fill="#6ec6ff"/><circle cx="66" cy="34" r="1.8" fill="#ffd54f"/><circle cx="35" cy="35" r="1.6" fill="#7bd88f"/>
+<ellipse cx="30" cy="68" rx="6" ry="4" fill="#ff8fab" opacity=".55"/>
+<ellipse cx="72" cy="68" rx="6" ry="4" fill="#ff8fab" opacity=".55"/>
+<g id="peyes">
+<g class="eye"><ellipse cx="40" cy="60" rx="4.6" ry="5.6" fill="#3b2412"/><circle cx="41.7" cy="57.8" r="1.7" fill="#fff"/></g>
+<g class="eye"><ellipse cx="62" cy="60" rx="4.6" ry="5.6" fill="#3b2412"/><circle cx="63.7" cy="57.8" r="1.7" fill="#fff"/></g>
+</g>
+<path id="pmouth" d="M47 68Q51 73 55 68" fill="none" stroke="#7a4b24" stroke-width="2.4" stroke-linecap="round"/>
+</svg>
+</div>
+
 <main>
 <header class="hero">
 <span class="stb" aria-hidden="true"><i class="c0"></i><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><i class="c5"></i></span>
@@ -601,6 +631,61 @@ document.getElementById('mkImg').onclick=function(){
 
 };
 renderTabs();renderItems();
+</script>
+
+<script>
+(function(){
+try{
+var el=document.getElementById('puff'),eyes=document.getElementById('peyes'),
+    aL=document.getElementById('parmL'),aR=document.getElementById('parmR'),
+    mouth=document.getElementById('pmouth'),sh=document.getElementById('pshadow');
+if(!el)return;
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function bounds(){
+  var bar=document.querySelector('.bar'),bh=bar?bar.offsetHeight:0,S=el.offsetHeight||72;
+  var top=(parseFloat(getComputedStyle(document.documentElement).paddingTop)||0)+12;
+  return [top,Math.max(top+10,innerHeight-bh-S-8)];
+}
+function targetY(){
+  var max=document.documentElement.scrollHeight-innerHeight,p=max>0?clamp(scrollY/max,0,1):0,b=bounds();
+  return b[0]+(b[1]-b[0])*p;
+}
+if(reduce){el.style.transform='translate3d(0,'+targetY()+'px,0)';addEventListener('scroll',function(){el.style.transform='translate3d(0,'+targetY()+'px,0)'},{passive:true});return}
+var y=targetY(),lastSY=scrollY,dist=0,amp=0,t=0,ex=0,ey=0,px=0,py=0,hasPtr=false,idleT=0;
+addEventListener('pointermove',function(e){hasPtr=true;px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2},{passive:true});
+function tick(now){
+  t=now/1000;
+  var ty=targetY(),vel=ty-y;
+  y+=vel*0.09;
+  var dS=scrollY-lastSY;lastSY=scrollY;
+  dist+=Math.abs(dS);
+  var moving=Math.abs(dS)>0.5||Math.abs(vel)>1.2;
+  amp+=((moving?1:0)-amp)*0.12;
+  if(moving)idleT=0;else idleT+=1/60;
+  var hop=-Math.abs(Math.sin(dist/38))*12*amp;
+  var bob=Math.sin(t*2.2)*2*(1-amp);
+  var tilt=clamp(vel*0.35,-16,16);
+  var st=clamp(Math.abs(vel)*0.004,0,.14),sy=1+st-Math.max(0,-hop/12)*0.0,sx=1/(1+st*.8);
+  var land=amp>0.2&&hop>-1.5?0.06*amp:0;
+  el.style.transform='translate3d(0,'+(y+hop+bob).toFixed(2)+'px,0) rotate('+tilt.toFixed(2)+'deg) scale('+(sx+land).toFixed(3)+','+(sy-land).toFixed(3)+')';
+  var gx=0,gy=0;
+  if(moving){gy=clamp(vel*0.15,-1,1)*2.5;gx=-1.6}
+  else if(hasPtr){gx=px*-2.8;gy=py*2.2}
+  ex+=(gx-ex)*0.15;ey+=(gy-ey)*0.15;
+  eyes.setAttribute('transform','translate('+ex.toFixed(2)+' '+ey.toFixed(2)+')');
+  var wave=Math.sin(t*14)*28*amp;
+  aL.style.transform='rotate('+(-wave-8*amp)+'deg)';
+  aR.style.transform='rotate('+(wave+8*amp)+'deg)';
+  mouth.setAttribute('d',moving?'M46 67Q51 77 56 67Z':'M47 68Q51 73 55 68');
+  mouth.setAttribute('fill',moving?'#c4574a':'none');
+  var sc=1-clamp(-hop/12,0,1)*0.25;
+  sh.setAttribute('rx',(24*sc).toFixed(1));sh.setAttribute('opacity',(0.16*sc).toFixed(3));
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+}catch(e){}
+})();
 </script>
 </body>
 </html>
