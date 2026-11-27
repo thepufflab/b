@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -52,32 +51,6 @@
     .hint-row .snd {
       margin: 0 !important;
       align-self: center;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #2d1c24;
-        --peg: #3d2630;
-        --ink: #ffe3ea;
-        --sub: #d6a1ae;
-        --card: #43292f;
-        --line: #7a4458;
-        --accent: #ff8fab;
-        --shadow: #1a0f14;
-        color-scheme: dark;
-      }
-    }
-
-    :root[data-theme="dark"] {
-      --bg: #2d1c24;
-      --peg: #3d2630;
-      --ink: #ffe3ea;
-      --sub: #d6a1ae;
-      --card: #43292f;
-      --line: #7a4458;
-      --accent: #ff8fab;
-      --shadow: #1a0f14;
-      color-scheme: dark;
     }
 
     html {
@@ -267,8 +240,6 @@
       overflow: visible;
     }
 
-    /* Idle floating animation */
-
     .puff-body {
       transform-box: fill-box;
       transform-origin: center;
@@ -284,8 +255,6 @@
         transform: translateY(-3px) rotate(1deg);
       }
     }
-
-    /* Eye blinking */
 
     .puff-eye {
       transform-box: fill-box;
@@ -307,8 +276,6 @@
       }
     }
 
-    /* Mouth expressions */
-
     .mouth-open {
       display: none;
     }
@@ -320,8 +287,6 @@
     .spinning .mouth-smile {
       display: none;
     }
-
-    /* Faster bounce while spinning */
 
     .spinning .puff-body {
       animation: puff-excited 0.38s ease-in-out infinite;
@@ -336,8 +301,6 @@
         transform: translateY(-7px) rotate(2deg);
       }
     }
-
-    /* Character squash animation */
 
     .spinning .puff-svg {
       animation: puff-squash 0.65s ease-in-out infinite;
