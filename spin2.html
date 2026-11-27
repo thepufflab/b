@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="烫法转盘" />
-  <meta name="theme-color" content="#ffeef2" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <title>泡芙的烫法转盘</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="烫法转盘" />
+    <meta name="theme-color" content="#ffeef2" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>泡芙的烫法转盘</title>
+
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap"
     />
+
     <style>
       :root {
         --bg: #ffeef2;
@@ -30,17 +38,18 @@
         color-scheme: light;
       }
 
-      /* hint row now sits right under the subtitle */
       .hint-row {
         display: flex;
         align-items: center;
         gap: 10px;
         margin: -10px 0 18px;
       }
+
       .hint-row .hint {
         margin: 0 !important;
         line-height: 1;
       }
+
       .hint-row .snd {
         margin: 0 !important;
         align-self: center;
@@ -75,6 +84,7 @@
       html {
         scroll-padding-top: env(safe-area-inset-top, 0px);
       }
+
       * {
         box-sizing: border-box;
       }
@@ -144,14 +154,17 @@
         box-shadow: 0 4px 0 var(--shadow);
         text-align: center;
       }
+
       .lk:active {
         transform: translateY(2px);
         box-shadow: 0 2px 0 var(--shadow);
       }
+
       .lk[aria-disabled="true"] {
         border-style: dashed;
         opacity: 0.65;
       }
+
       .lk:focus-visible {
         outline: 3px solid var(--accent);
         outline-offset: 2px;
@@ -193,6 +206,7 @@
         z-index: 3;
         filter: drop-shadow(0 3px 0 var(--shadow));
       }
+
       .pointer.tick {
         transform: translateX(-50%) rotate(-16deg);
       }
@@ -213,20 +227,25 @@
         box-shadow: 0 5px 0 var(--shadow);
         transition: transform 0.12s;
       }
+
       .hub svg {
         width: 100%;
         height: 100%;
         display: block;
       }
+
       .hub:hover:not(:disabled) {
         transform: translate(-50%, -50%) scale(1.05);
       }
+
       .hub:active:not(:disabled) {
         transform: translate(-50%, -46%) scale(0.96);
       }
+
       .hub:disabled {
         cursor: wait;
       }
+
       .hub:focus-visible {
         outline: 4px solid var(--accent);
         outline-offset: 3px;
@@ -248,6 +267,7 @@
         animation: bob 1.1s ease-in-out infinite;
         pointer-events: none;
       }
+
       .tap:before {
         content: "";
         position: absolute;
@@ -272,12 +292,15 @@
       .spinning .tap {
         display: none;
       }
+
       .mouth-o {
         display: none;
       }
+
       .spinning .mouth-o {
         display: inline;
       }
+
       .spinning .mouth-s {
         display: none;
       }
@@ -299,6 +322,7 @@
         text-align: center;
         box-shadow: 0 6px 0 var(--shadow);
       }
+
       .result:before,
       .result:after {
         content: "";
@@ -310,27 +334,32 @@
         background: var(--accent);
         border: 3px solid var(--card);
       }
+
       .result:before {
         left: 22px;
       }
+
       .result:after {
         right: 22px;
       }
+
       .result .label {
         color: var(--sub);
         font-size: 15px;
       }
+
       .result .name {
         display: inline-block;
         margin-top: 6px;
         padding: 2px 22px;
         border-radius: 18px;
-        font-size: clamp(36px, 10vw, 4px);
+        font-size: clamp(36px, 10vw, 45px);
         letter-spacing: 0.1em;
         line-height: 1.3;
         background: var(--hl, transparent);
         color: #6b3b45;
       }
+
       .result.pop .name {
         animation: pop 0.55s cubic-bezier(0.3, 1.6, 0.5, 1);
       }
@@ -352,6 +381,7 @@
         border-radius: 22px;
         padding: 14px 16px;
       }
+
       .records h2 {
         font-size: 16px;
         font-weight: 400;
@@ -361,6 +391,7 @@
         justify-content: space-between;
         align-items: center;
       }
+
       .records button {
         font: inherit;
         font-size: 14px;
@@ -382,6 +413,7 @@
         gap: 8px;
         min-height: 32px;
       }
+
       .chip {
         padding: 4px 13px;
         border-radius: 999px;
@@ -389,6 +421,7 @@
         font-size: 15px;
         border: 2px solid #fff;
       }
+
       .empty {
         color: var(--sub);
         font-size: 14px;
@@ -405,6 +438,7 @@
         border: 2px solid var(--line);
         cursor: pointer;
       }
+
       .snd:focus-visible {
         outline: 3px solid var(--accent);
         outline-offset: 2px;
@@ -419,18 +453,18 @@
         z-index: 9;
       }
 
-      /* ===== Tablet / landscape layout: info on the left, big wheel on the right ===== */
+      /* ===== Landscape layout ===== */
+
       @media (min-width: 800px) and (orientation: landscape) {
         body {
           display: grid;
           grid-template-columns: minmax(340px, 460px) auto;
-          /* row 1 and row 9 are flexible spacers: they soak up extra height so the left boxes stay tight and vertically centred
-             rows: 2 title, 3 sub, 4 hint, 5 links, 6 note, 7 result, 8 records */
           grid-template-rows: 1fr auto auto auto auto auto auto auto 1fr;
-          justify-content: center;
+          justify-content: start;
           column-gap: clamp(32px, 5vw, 72px);
           align-items: start;
           padding: 24px 32px 28px;
+          overflow-x: hidden;
         }
         .title {
           grid-area: 2 / 1;
@@ -438,86 +472,120 @@
           text-align: left;
           font-size: clamp(34px, 4.2vw, 46px);
         }
+
         .sub {
           grid-area: 3 / 1;
           margin: 10px 0 14px;
           justify-self: start;
         }
+
         .hint-row {
           grid-area: 4 / 1;
           justify-self: start;
           margin: 0 0 16px;
         }
+
         .hint-row .hint {
           font-size: 16px;
         }
+
         .hint-row .snd {
           font-size: 15px;
           padding: 6px 16px;
         }
+
         .links {
           grid-area: 5 / 1;
           width: 100%;
           margin: 0 0 16px;
         }
+
         .lk {
           padding: 12px 8px;
           font-size: 18px;
         }
+
         .lknote {
           grid-area: 6 / 1;
           width: 100%;
           margin: 0;
           text-align: left;
         }
+
         .result {
           grid-area: 7 / 1;
           width: 100%;
           margin: 14px 0 0;
         }
+
         .records {
           grid-area: 8 / 1;
           width: 100%;
           margin-top: 20px;
           align-self: start;
         }
+
+        /* Wheel is now independent of the left-side grid */
         .stage {
-          grid-area: 1 / 2 / 10 / 3;
-          align-self: center;
-          margin: 28px 0 0;
+          position: fixed;
+          right: clamp(16px, 4vw, 60px);
+          top: 50%;
+          transform: translateY(-50%);
+          margin: 0;
           width: min(calc(100dvh - 130px), 56vw, 680px);
+          z-index: 0;
         }
+
         .tap {
           font-size: 17px;
           bottom: -16px;
         }
+
         .pointer {
           width: 54px;
           top: -24px;
         }
+
+        /* Keep all left-side content above the wheel */
+        .title,
+        .sub,
+        .hint-row,
+        .links,
+        .lknote,
+        .result,
+        .records {
+          position: relative;
+          z-index: 2;
+        }
       }
 
-      /* short landscape screens (e.g. 1024x768): tighten vertical rhythm */
+      /* Short landscape screens */
+
       @media (min-width: 800px) and (orientation: landscape) and (max-height: 800px) {
         body {
           padding-top: 14px;
           padding-bottom: 14px;
         }
+
         .sub {
           margin: 6px 0 12px;
         }
+
         .hint-row {
           margin-bottom: 12px;
         }
+
         .result {
           padding: 12px 16px 14px;
         }
+
         .records {
           margin-top: 14px;
           padding: 12px 14px;
         }
+
+        /* Keep wheel sizing consistent with the fixed landscape layout */
         .stage {
-          margin-top: 20px;
           width: min(calc(100dvh - 110px), 56vw, 680px);
         }
       }
@@ -526,9 +594,11 @@
         .tap {
           animation: none;
         }
+
         .stage canvas {
           transition-duration: 0.01s;
         }
+
         .result.pop .name {
           animation: none;
         }
@@ -562,6 +632,7 @@
         rel="noopener noreferrer"
         >🧮 计算器</a
       >
+
       <a
         class="lk"
         id="lkGame"
@@ -595,14 +666,17 @@
       <button class="hub" id="spin" type="button" aria-label="开转">
         <svg viewBox="0 0 120 120" aria-hidden="true">
           <ellipse cx="60" cy="92" rx="38" ry="14" fill="#f4c98d" />
+
           <path
             d="M26 82c8 8 16-2 24 4s16-2 24 4 14-4 20-8v6c-6 12-90 12-96 0z"
             fill="#fffaf0"
           />
+
           <path
             d="M16 74C14 44 34 22 60 22s46 22 44 52c-10 12-78 12-88 0z"
             fill="#f2b56a"
           />
+
           <path
             d="M30 40c6-9 16-14 26-14"
             stroke="#fbd7a0"
@@ -610,15 +684,20 @@
             stroke-linecap="round"
             fill="none"
           />
+
           <circle cx="82" cy="34" r="2.6" fill="#fff4dc" />
           <circle cx="92" cy="46" r="2.2" fill="#fff4dc" />
           <circle cx="72" cy="28" r="2" fill="#fff4dc" />
+
           <circle cx="44" cy="58" r="4.5" fill="#5a3030" />
           <circle cx="76" cy="58" r="4.5" fill="#5a3030" />
+
           <circle cx="45.6" cy="56.4" r="1.4" fill="#fff" />
           <circle cx="77.6" cy="56.4" r="1.4" fill="#fff" />
+
           <ellipse cx="33" cy="68" rx="7" ry="4.5" fill="#ff9db3" />
           <ellipse cx="87" cy="68" rx="7" ry="4.5" fill="#ff9db3" />
+
           <path
             class="mouth-s"
             d="M54 68q6 6 12 0"
@@ -627,6 +706,7 @@
             fill="none"
             stroke-linecap="round"
           />
+
           <ellipse
             class="mouth-o"
             cx="60"
@@ -636,6 +716,7 @@
             fill="#5a3030"
           />
         </svg>
+
         <span class="tap">点我</span>
       </button>
     </div>
@@ -647,6 +728,7 @@
 
     <div class="records">
       <h2>转过的结果 <button id="clear" type="button">清空</button></h2>
+
       <div class="chips" id="chips">
         <span class="empty">还没有记录哦</span>
       </div>
@@ -692,16 +774,18 @@
       var N = ITEMS.length;
       var A = 360 / N;
 
-      // 按照权重随机选择结果
       function weightedRandom() {
         var total = WEIGHTS.reduce(function (sum, weight) {
           return sum + weight;
         }, 0);
+
         var random = Math.random() * total;
+
         for (var i = 0; i < N; i++) {
           random -= WEIGHTS[i];
           if (random < 0) return i;
         }
+
         return N - 1;
       }
 
@@ -721,7 +805,9 @@
       function loadRecords() {
         try {
           var v = JSON.parse(localStorage.getItem(KEY) || "[]");
+
           if (!Array.isArray(v)) return [];
+
           return v
             .filter(function (i) {
               return Number.isInteger(i) && i >= 0 && i < N;
@@ -764,6 +850,7 @@
 
         for (var i = 0; i < 24; i++) {
           var t = (i / 24) * Math.PI * 2;
+
           ctx.beginPath();
           ctx.arc(
             c + Math.cos(t) * (R - 19),
@@ -772,6 +859,7 @@
             0,
             Math.PI * 2,
           );
+
           ctx.fillStyle = i % 2 ? "#fff" : "#ffe29a";
           ctx.fill();
         }
@@ -973,8 +1061,11 @@
 
       function playTick() {
         var n = performance.now();
+
         if (n - lastTickT < 45) return;
+
         lastTickT = n;
+
         note(SCALE[MEL[tc++ % MEL.length]], 0, 0.16, "triangle", 0.13);
       }
 
@@ -1004,7 +1095,6 @@
         nameEl.textContent = "…";
         nameEl.style.setProperty("--hl", "transparent");
 
-        // 使用加权随机，而不是原本的平均随机
         var idx = weightedRandom();
 
         var off = A * (0.12 + Math.random() * 0.76);
@@ -1043,7 +1133,7 @@
 
           saveRecords();
           render();
-          //confetti();
+          confetti();
           playWin();
         }
 
