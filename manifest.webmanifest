@@ -1,6 +1,6 @@
 {
   "name": "泡芙的转盘",
-  "short_name": "转盘",
+  "short_name": "泡芙的转盘",
   "start_url": "spin.html",
   "scope": "./",
   "display": "standalone",
