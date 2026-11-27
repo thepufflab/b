@@ -1,7 +1,8 @@
 {
   "name": "泡芙的转盘",
   "short_name": "转盘",
-  "start_url": "./",
+  "start_url": "spin.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffeef2",
   "theme_color": "#ffeef2",
