@@ -603,6 +603,10 @@
           animation: none;
         }
       }
+
+      .lk {
+    display: none;
+}
     </style>
 
     <script
@@ -1210,5 +1214,17 @@
         });
       })();
     </script>
+
+    <div id="screenSize"></div>
+
+<script>
+function updateSize() {
+    document.getElementById("screenSize").textContent =
+        window.innerWidth + " × " + window.innerHeight + " px";
+}
+
+window.addEventListener("resize", updateSize);
+updateSize();
+</script>
   </body>
 </html>
