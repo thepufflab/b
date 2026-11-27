@@ -20,11 +20,11 @@
         padding-bottom: env(safe-area-inset-bottom, 0px);
         color-scheme: light;
       }
-
+ 
       .hint-row { display: flex; align-items: center; gap: 10px; transform: translateY(10px); }
       .hint-row .hint { margin: 0 !important; line-height: 1; }
       .hint-row .snd { margin: 0 !important; align-self: center; }
-
+ 
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
           --bg: #2d1c24; --peg: #3d2630; --ink: #ffe3ea; --sub: #d6a1ae;
@@ -32,16 +32,16 @@
           color-scheme: dark;
         }
       }
-
+ 
       :root[data-theme="dark"] {
         --bg: #2d1c24; --peg: #3d2630; --ink: #ffe3ea; --sub: #d6a1ae;
         --card: #43292f; --line: #7a4458; --accent: #ff8fab; --shadow: #1a0f14;
         color-scheme: dark;
       }
-
+ 
       html { scroll-padding-top: env(safe-area-inset-top, 0px); }
       * { box-sizing: border-box; }
-
+ 
       body {
         margin: 0;
         min-height: 100vh;
@@ -56,7 +56,7 @@
         align-items: center;
         padding: 18px 16px 44px;
       }
-
+ 
       .title {
         margin: 6px 0 0;
         font-weight: 400;
@@ -65,7 +65,7 @@
         text-align: center;
         text-shadow: 0 3px 0 var(--card), 0 0 12px var(--card), 0 0 2px var(--card);
       }
-
+ 
       .sub {
         margin: 6px 0 26px;
         padding: 5px 16px;
@@ -76,7 +76,7 @@
         font-size: 15px;
         text-align: center;
       }
-
+ 
       .links {
         width: min(92vw, 440px);
         display: grid;
@@ -84,7 +84,7 @@
         gap: 10px;
         margin: -8px 0 20px;
       }
-
+ 
       .lk {
         display: flex; align-items: center; justify-content: center; gap: 6px;
         text-decoration: none; font-size: 16px; padding: 9px 8px;
@@ -94,7 +94,7 @@
       .lk:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--shadow); }
       .lk[aria-disabled="true"] { border-style: dashed; opacity: 0.65; }
       .lk:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
+ 
       .lknote {
         width: min(92vw, 440px);
         margin: -14px 0 16px;
@@ -103,15 +103,15 @@
         text-align: center;
         min-height: 0;
       }
-
+ 
       .stage { position: relative; width: min(88vw, 440px); aspect-ratio: 1; margin-top: 10px; }
-
+ 
       .stage canvas {
         width: 100%; height: 100%; display: block; border-radius: 50%;
         filter: drop-shadow(0 8px 0 var(--shadow));
         transition: transform 5s cubic-bezier(0.12, 0.62, 0.08, 1);
       }
-
+ 
       .pointer {
         position: absolute; left: 50%; top: -20px; width: 46px;
         transform: translateX(-50%); transform-origin: 50% 0;
@@ -119,7 +119,7 @@
         filter: drop-shadow(0 3px 0 var(--shadow));
       }
       .pointer.tick { transform: translateX(-50%) rotate(-16deg); }
-
+ 
       .hub {
         position: absolute; left: 50%; top: 50%;
         transform: translate(-50%, -50%);
@@ -133,7 +133,7 @@
       .hub:active:not(:disabled) { transform: translate(-50%, -46%) scale(0.96); }
       .hub:disabled { cursor: wait; }
       .hub:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
-
+ 
       .tap {
         position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%);
         padding: 2px 12px; border-radius: 999px; background: var(--accent);
@@ -145,19 +145,19 @@
         content: ""; position: absolute; left: 50%; top: -9px; transform: translateX(-50%);
         border: 5px solid transparent; border-top: 0; border-bottom: 7px solid var(--accent);
       }
-
+ 
       @keyframes bob {
         0%, 100% { transform: translate(-50%, 0); }
         50% { transform: translate(-50%, -5px); }
       }
-
+ 
       .spinning .tap { display: none; }
       .mouth-o { display: none; }
       .spinning .mouth-o { display: inline; }
       .spinning .mouth-s { display: none; }
-
+ 
       .hint { margin: 18px 0 0; color: var(--sub); font-size: 15px; }
-
+ 
       .result {
         position: relative; margin: 20px 0 0; width: min(92vw, 440px);
         padding: 18px 16px 20px; background: var(--card);
@@ -177,12 +177,12 @@
         background: var(--hl, transparent); color: #6b3b45;
       }
       .result.pop .name { animation: pop 0.55s cubic-bezier(0.3, 1.6, 0.5, 1); }
-
+ 
       @keyframes pop {
         0% { transform: scale(0.5) rotate(-6deg); }
         100% { transform: scale(1) rotate(0); }
       }
-
+ 
       .records {
         width: min(92vw, 440px); margin-top: 22px; background: var(--card);
         border: 2px solid var(--line); border-radius: 22px; padding: 14px 16px;
@@ -195,59 +195,52 @@
         font: inherit; font-size: 14px; background: none; border: none;
         color: var(--sub); text-decoration: underline; cursor: pointer; padding: 2px;
       }
-
+ 
       .chips { display: flex; flex-wrap: wrap; gap: 8px; min-height: 32px; }
       .chip { padding: 4px 13px; border-radius: 999px; color: #6b3b45; font-size: 15px; border: 2px solid #fff; }
       .empty { color: var(--sub); font-size: 14px; }
-
+ 
       .snd {
         margin-top: 10px; font: inherit; font-size: 14px; padding: 4px 14px;
         border-radius: 999px; background: var(--card); color: var(--sub);
         border: 2px solid var(--line); cursor: pointer;
       }
       .snd:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
+ 
       #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9; }
-
+ 
       /* ===== Tablet / landscape layout: info on the left, big wheel on the right ===== */
       @media (min-width: 900px) and (orientation: landscape) {
         body {
           display: grid;
           grid-template-columns: minmax(340px, 460px) auto;
-          grid-template-areas:
-            "title  stage"
-            "sub    stage"
-            "links  stage"
-            "lknote stage"
-            "result stage"
-            "records hint";
-          grid-template-rows: auto auto auto auto auto 1fr;
+          /* row 1 and row 8 are flexible spacers: they soak up extra height so the left boxes stay tight and vertically centred */
+          grid-template-rows: 1fr auto auto auto auto auto auto 1fr auto;
           justify-content: center;
-          align-content: center;
           column-gap: clamp(32px, 5vw, 72px);
           align-items: start;
           padding: 24px 32px 28px;
         }
-        .title { grid-area: title; margin: 0; text-align: left; font-size: clamp(34px, 4.2vw, 46px); }
-        .sub { grid-area: sub; margin: 10px 0 20px; justify-self: start; }
-        .links { grid-area: links; width: 100%; margin: 0 0 16px; }
+        .title { grid-area: 2 / 1; margin: 0; text-align: left; font-size: clamp(34px, 4.2vw, 46px); }
+        .sub { grid-area: 3 / 1; margin: 10px 0 20px; justify-self: start; }
+        .links { grid-area: 4 / 1; width: 100%; margin: 0 0 16px; }
         .lk { padding: 12px 8px; font-size: 18px; }
-        .lknote { grid-area: lknote; width: 100%; margin: 0; text-align: left; }
-        .result { grid-area: result; width: 100%; margin: 14px 0 0; }
-        .records { grid-area: records; width: 100%; margin-top: 20px; align-self: start; }
+        .lknote { grid-area: 5 / 1; width: 100%; margin: 0; text-align: left; }
+        .result { grid-area: 6 / 1; width: 100%; margin: 14px 0 0; }
+        .records { grid-area: 7 / 1; width: 100%; margin-top: 20px; align-self: start; }
         .stage {
-          grid-area: stage;
+          grid-area: 1 / 2 / 9 / 3;
           align-self: center;
           margin: 28px 0 0;
           width: min(calc(100dvh - 130px), 56vw, 680px);
         }
-        .hint-row { grid-area: hint; justify-self: center; align-self: end; transform: none; margin-top: 26px; }
+        .hint-row { grid-area: 9 / 2; justify-self: center; transform: none; margin-top: 26px; }
         .hint-row .hint { font-size: 16px; }
         .hint-row .snd { font-size: 15px; padding: 6px 16px; }
         .tap { font-size: 17px; bottom: -16px; }
         .pointer { width: 54px; top: -24px; }
       }
-
+ 
       /* short landscape screens (e.g. 1024x768): tighten vertical rhythm */
       @media (min-width: 900px) and (orientation: landscape) and (max-height: 800px) {
         body { padding-top: 14px; padding-bottom: 14px; }
@@ -256,35 +249,35 @@
         .records { margin-top: 14px; padding: 12px 14px; }
         .stage { margin-top: 20px; width: min(calc(100dvh - 110px), 56vw, 680px); }
       }
-
+ 
       @media (prefers-reduced-motion: reduce) {
         .tap { animation: none; }
         .stage canvas { transition-duration: 0.01s; }
         .result.pop .name { animation: none; }
       }
     </style>
-
+ 
     <script defer src="https://cloud.umami.is/script.js" data-website-id="829ed850-0010-42b0-bd16-2cbb7e170651"></script>
   </head>
-
+ 
   <body>
     <h1 class="title">泡芙的烫法转盘</h1>
     <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
-
+ 
     <nav class="links" aria-label="其他网站">
       <a class="lk" id="lkCalc" href="#" target="_blank" rel="noopener noreferrer">🧮 计算器</a>
       <a class="lk" id="lkGame" href="#" target="_blank" rel="noopener noreferrer">🎮 游戏</a>
     </nav>
-
+ 
     <p class="lknote" id="lkMsg" aria-live="polite"></p>
-
+ 
     <div class="stage" id="stage">
       <svg class="pointer" id="pointer" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M20 37C4 24 2 14 8 8c5-5 11-2 12 3 1-5 7-8 12-3 6 6 4 16-12 29z" fill="#ff7f9f" stroke="#fff" stroke-width="3" stroke-linejoin="round" />
       </svg>
-
+ 
       <canvas id="wheel" width="960" height="960" aria-label="烫法转盘"></canvas>
-
+ 
       <button class="hub" id="spin" type="button" aria-label="开转">
         <svg viewBox="0 0 120 120" aria-hidden="true">
           <ellipse cx="60" cy="92" rx="38" ry="14" fill="#f4c98d" />
@@ -306,44 +299,44 @@
         <span class="tap">点我</span>
       </button>
     </div>
-
+ 
     <div class="hint-row">
       <p class="hint">点一点中间的泡芙就开转</p>
       <button class="snd" id="snd" type="button" aria-pressed="true">声音：开</button>
     </div>
-
+ 
     <div class="result" id="result" aria-live="polite">
       <div class="label">这次就用</div>
       <div class="name" id="name">？</div>
     </div>
-
+ 
     <div class="records">
       <h2>转过的结果 <button id="clear" type="button">清空</button></h2>
       <div class="chips" id="chips"><span class="empty">还没有记录哦</span></div>
     </div>
-
+ 
     <canvas id="fx"></canvas>
-
+ 
     <script>
       var ITEMS = [
         "澡巾闪", "金沙糖", "藤蔓", "透明玻璃闪", "雪璃玻璃粗闪",
         "仙度瑞拉波浪闪", "澡巾", "仲夏夜之梦粗闪", "英仙座细闪", "普通毛巾",
       ];
-
+ 
       var COLORS = [
         "#ffc8d6", "#ffe29a", "#bfe9cf", "#bcd9ff", "#e3ccff",
         "#ffd2ae", "#b5ece4", "#ffbdb0", "#dcec9c", "#d5c6ff",
       ];
-
+ 
       // 每个选项的中奖概率（百分比）
       // 英仙座细闪：1%
       // 普通毛巾：1%
       // 其他8项：各12.25%
       var WEIGHTS = [12.25, 12.25, 12.25, 12.25, 12.25, 12.25, 12.25, 12.25, 1, 1];
-
+ 
       var N = ITEMS.length;
       var A = 360 / N;
-
+ 
       // 按照权重随机选择结果
       function weightedRandom() {
         var total = WEIGHTS.reduce(function (sum, weight) { return sum + weight; }, 0);
@@ -354,20 +347,20 @@
         }
         return N - 1;
       }
-
+ 
       var cv = document.getElementById("wheel");
       var ctx = cv.getContext("2d");
-
+ 
       var btn = document.getElementById("spin");
       var nameEl = document.getElementById("name");
       var resEl = document.getElementById("result");
-
+ 
       var chips = document.getElementById("chips");
       var stage = document.getElementById("stage");
       var pointer = document.getElementById("pointer");
-
+ 
       var KEY = "puff-roulette-records";
-
+ 
       function loadRecords() {
         try {
           var v = JSON.parse(localStorage.getItem(KEY) || "[]");
@@ -377,25 +370,25 @@
           return [];
         }
       }
-
+ 
       function saveRecords() {
         try { localStorage.setItem(KEY, JSON.stringify(records)); } catch (e) {}
       }
-
+ 
       var rot = 0;
       var spinning = false;
       var records = loadRecords();
-
+ 
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+ 
       function draw() {
         var S = cv.width;
         var c = S / 2;
         var R = c - 4;
         var R2 = R - 38;
-
+ 
         ctx.clearRect(0, 0, S, S);
-
+ 
         ctx.beginPath();
         ctx.arc(c, c, R, 0, Math.PI * 2);
         ctx.fillStyle = "#ff8fab";
@@ -403,7 +396,7 @@
         ctx.lineWidth = 8;
         ctx.strokeStyle = "#fff";
         ctx.stroke();
-
+ 
         for (var i = 0; i < 24; i++) {
           var t = (i / 24) * Math.PI * 2;
           ctx.beginPath();
@@ -411,57 +404,57 @@
           ctx.fillStyle = i % 2 ? "#fff" : "#ffe29a";
           ctx.fill();
         }
-
+ 
         for (var i = 0; i < N; i++) {
           var a0 = ((i * A - 90) * Math.PI) / 180;
           var a1 = (((i + 1) * A - 90) * Math.PI) / 180;
-
+ 
           ctx.beginPath();
           ctx.moveTo(c, c);
           ctx.arc(c, c, R2, a0, a1);
           ctx.closePath();
-
+ 
           ctx.fillStyle = COLORS[i];
           ctx.fill();
           ctx.lineWidth = 5;
           ctx.strokeStyle = "#fff";
           ctx.stroke();
-
+ 
           ctx.save();
           ctx.translate(c, c);
           ctx.rotate((a0 + a1) / 2);
-
+ 
           ctx.fillStyle = "#6b3b45";
           ctx.textAlign = "right";
           ctx.textBaseline = "middle";
           ctx.font = '400 39px "ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
-
+ 
           ctx.fillText(ITEMS[i], R2 - 30, 0);
-
+ 
           ctx.fillStyle = "rgba(255,255,255,.85)";
           ctx.beginPath();
           ctx.arc(R2 - 14, -46, 5, 0, 7);
           ctx.arc(R2 - 14, 46, 5, 0, 7);
           ctx.fill();
-
+ 
           ctx.restore();
         }
-
+ 
         ctx.beginPath();
         ctx.arc(c, c, R2, 0, Math.PI * 2);
         ctx.lineWidth = 8;
         ctx.strokeStyle = "#fff";
         ctx.stroke();
       }
-
+ 
       function render() {
         if (!records.length) {
           chips.innerHTML = '<span class="empty">还没有记录哦</span>';
           return;
         }
-
+ 
         chips.innerHTML = "";
-
+ 
         records.forEach(function (i) {
           var s = document.createElement("span");
           s.className = "chip";
@@ -470,42 +463,42 @@
           chips.appendChild(s);
         });
       }
-
+ 
       var lastIdx = -1;
-
+ 
       function tickLoop() {
         if (!spinning) return;
-
+ 
         var m = new DOMMatrix(getComputedStyle(cv).transform);
         var ang = (Math.atan2(m.b, m.a) * 180) / Math.PI;
         var k = Math.floor((((-ang % 360) + 360) % 360) / A);
-
+ 
         if (k !== lastIdx) {
           lastIdx = k;
           playTick();
-
+ 
           pointer.classList.add("tick");
-
+ 
           setTimeout(function () {
             pointer.classList.remove("tick");
           }, 80);
         }
-
+ 
         requestAnimationFrame(tickLoop);
       }
-
+ 
       function confetti() {
         if (reduce) return;
-
+ 
         var fx = document.getElementById("fx");
         var x = fx.getContext("2d");
-
+ 
         fx.width = innerWidth;
         fx.height = innerHeight;
-
+ 
         var b = stage.getBoundingClientRect();
         var ps = [];
-
+ 
         for (var j = 0; j < 90; j++) {
           ps.push({
             x: b.left + b.width / 2,
@@ -519,25 +512,25 @@
             round: j % 3 === 0,
           });
         }
-
+ 
         var f = 0;
-
+ 
         (function go() {
           x.clearRect(0, 0, fx.width, fx.height);
-
+ 
           ps.forEach(function (p) {
             p.vy += 0.35;
             p.x += p.vx;
             p.y += p.vy;
             p.vx *= 0.99;
             p.r += p.vr;
-
+ 
             x.save();
             x.translate(p.x, p.y);
             x.rotate(p.r);
             x.globalAlpha = Math.max(0, 1 - f / 120);
             x.fillStyle = p.c;
-
+ 
             if (p.round) {
               x.beginPath();
               x.arc(0, 0, p.s / 2, 0, 7);
@@ -545,10 +538,10 @@
             } else {
               x.fillRect(-p.s / 2, -p.s / 2, p.s, p.s);
             }
-
+ 
             x.restore();
           });
-
+ 
           if (++f < 120) {
             requestAnimationFrame(go);
           } else {
@@ -556,161 +549,161 @@
           }
         })();
       }
-
+ 
       var ac = null;
       var muted = false;
       var tc = 0;
       var lastTickT = 0;
-
+ 
       var SCALE = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
       var MEL = [0, 2, 4, 5, 4, 2, 3, 1];
-
+ 
       function audio() {
         if (muted) return null;
-
+ 
         if (!ac) {
           var C = window.AudioContext || window.webkitAudioContext;
           if (!C) return null;
-
+ 
           try {
             ac = new C();
           } catch (e) {
             return null;
           }
         }
-
+ 
         if (ac.state === "suspended") ac.resume();
-
+ 
         return ac;
       }
-
+ 
       function note(f, delay, dur, type, vol) {
         var a = audio();
         if (!a) return;
-
+ 
         var t = a.currentTime + delay;
         var o = a.createOscillator();
         var g = a.createGain();
-
+ 
         o.type = type || "sine";
         o.frequency.value = f;
-
+ 
         g.gain.setValueAtTime(0.0001, t);
         g.gain.exponentialRampToValueAtTime(vol || 0.15, t + 0.01);
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-
+ 
         o.connect(g);
         g.connect(a.destination);
-
+ 
         o.start(t);
         o.stop(t + dur + 0.02);
       }
-
+ 
       function playTick() {
         var n = performance.now();
         if (n - lastTickT < 45) return;
         lastTickT = n;
         note(SCALE[MEL[tc++ % MEL.length]], 0, 0.16, "triangle", 0.13);
       }
-
+ 
       function playStart() {
         [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) {
           note(f, i * 0.07, 0.18, "triangle", 0.14);
         });
       }
-
+ 
       function playWin() {
         [783.99, 987.77, 1174.66, 1567.98].forEach(function (f, i) {
           note(f, i * 0.12, 0.35, "sine", 0.17);
         });
-
+ 
         note(2093, 0.52, 0.5, "sine", 0.09);
       }
-
+ 
       function spin() {
         if (spinning) return;
-
+ 
         spinning = true;
         btn.disabled = true;
-
+ 
         stage.classList.add("spinning");
         resEl.classList.remove("pop");
-
+ 
         nameEl.textContent = "…";
         nameEl.style.setProperty("--hl", "transparent");
-
+ 
         // 使用加权随机，而不是原本的平均随机
         var idx = weightedRandom();
-
+ 
         var off = A * (0.12 + Math.random() * 0.76);
         var land = ((-(idx * A + off) % 360) + 360) % 360;
-
+ 
         rot = Math.ceil(rot / 360) * 360 + 360 * 6 + land;
-
+ 
         lastIdx = -1;
-
+ 
         playStart();
-
+ 
         cv.style.transform = "rotate(" + rot + "deg)";
-
+ 
         requestAnimationFrame(tickLoop);
-
+ 
         var done = false;
-
+ 
         function finish() {
           if (done) return;
-
+ 
           done = true;
           spinning = false;
           btn.disabled = false;
-
+ 
           stage.classList.remove("spinning");
-
+ 
           nameEl.textContent = ITEMS[idx];
           nameEl.style.setProperty("--hl", COLORS[idx]);
-
+ 
           void resEl.offsetWidth;
           resEl.classList.add("pop");
-
+ 
           records.unshift(idx);
-
+ 
           if (records.length > 12) records.pop();
-
+ 
           saveRecords();
           render();
           confetti();
           playWin();
         }
-
+ 
         cv.addEventListener("transitionend", finish, { once: true });
-
+ 
         setTimeout(finish, 5400);
       }
-
+ 
       btn.addEventListener("click", spin);
-
+ 
       var sndBtn = document.getElementById("snd");
-
+ 
       sndBtn.addEventListener("click", function () {
         muted = !muted;
-
+ 
         sndBtn.textContent = muted ? "声音：关" : "声音：开";
         sndBtn.setAttribute("aria-pressed", String(!muted));
-
+ 
         if (!muted) {
           note(783.99, 0, 0.2, "triangle", 0.14);
         }
       });
-
+ 
       document.getElementById("clear").addEventListener("click", function () {
         records = [];
         saveRecords();
         render();
       });
-
+ 
       draw();
       render();
-
+ 
       if (document.fonts && document.fonts.load) {
         document.fonts
           .load('39px "ZCOOL KuaiLe"', ITEMS.join("") + "？…")
@@ -718,7 +711,7 @@
           .catch(function () {});
       }
     </script>
-
+ 
     <script>
       (function () {
         /* 在这里填网址就可以了，例如 calc:'https://xxx.com' */
@@ -726,29 +719,29 @@
           calc: "https://thepufflab.github.io/b/",
           game: "https://thepufflab.github.io/b/game",
         };
-
+ 
         var map = {
           lkCalc: ["calc", "泡芙的计算器"],
           lkGame: ["game", "泡芙的游戏"],
         };
-
+ 
         Object.keys(map).forEach(function (id) {
           var a = document.getElementById(id);
           var u = LINKS[map[id][0]];
-
+ 
           if (!a) return;
-
+ 
           if (u) {
             a.href = u;
             return;
           }
-
+ 
           a.setAttribute("aria-disabled", "true");
           a.removeAttribute("target");
-
+ 
           a.addEventListener("click", function (e) {
             e.preventDefault();
-
+ 
             document.getElementById("lkMsg").textContent =
               map[id][1] + "的网址还没填，之后填进代码里的 LINKS 就能用了。";
           });
@@ -757,3 +750,4 @@
     </script>
   </body>
 </html>
+ 
