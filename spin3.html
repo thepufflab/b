@@ -567,18 +567,14 @@
   <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
 
   <div class="hint-row">
-    <p class="hint">点一点中间的泡芙就开转</p>
+    <p class="hint">点一点泡芙就开转</p>
 
     <button class="snd" id="snd" type="button" aria-pressed="true">声音：开</button>
 
     <!-- ===== Water reminder controls ===== -->
-    <div class="wrow">
-      <button class="snd" id="wToggle" type="button" aria-pressed="true">💧 喝水提醒：开</button>
-      <button class="snd" id="wInt" type="button">间隔：40分钟</button>
-      <button class="snd wnotif" id="wNotif" type="button" hidden>🔔 开启通知</button>
-    </div>
-  </div>
-
+<button class="snd" id="wToggle" type="button" aria-pressed="true">💧</button>
+<button class="snd wnotif" id="wNotif" type="button" hidden>🔔</button>
+</div>
   <nav class="links" aria-label="其他网站">
     <a class="lk" id="lkCalc" href="#" target="_blank" rel="noopener noreferrer">🧮 计算器</a>
     <a class="lk" id="lkGame" href="#" target="_blank" rel="noopener noreferrer">🎮 游戏</a>
@@ -1262,7 +1258,6 @@
         var K_ON = "puff-water-on";
         var K_NEXT = "puff-water-next";
         var K_MIN = "puff-water-min";
-        var OPTS = [0.1, 20, 40, 60];
         function lsGet(k) {
           try { return localStorage.getItem(k); } catch (e) { return null; }
         }
@@ -1272,13 +1267,11 @@
         }
 
         var on = lsGet(K_ON) !== "0";                 /* on by default */
-        var mins = parseInt(lsGet(K_MIN), 10);
-        if (OPTS.indexOf(mins) < 0) mins = 40;
+        var mins = 0.1; /* 提醒间隔（分钟）想改就改这个数字 */
         var next = parseInt(lsGet(K_NEXT), 10);
         var shown = false;
 
         var elToggle = document.getElementById("wToggle");
-        var elInt = document.getElementById("wInt");
         var elNotif = document.getElementById("wNotif");
         var elDrink = document.getElementById("drink");
         var elOk = document.getElementById("drinkOk");
@@ -1304,11 +1297,10 @@
         if (!(next > 0)) schedule();
 
         function refreshButtons() {
-          elToggle.textContent = on ? "💧 喝水提醒：开" : "💧 喝水提醒：关";
+          elToggle.textContent = on ? "💧" : "💧";
           elToggle.setAttribute("aria-pressed", String(on));
           elToggle.classList.toggle("wof", !on);
-          elInt.textContent = "间隔：" + mins + "分钟";
-          elInt.style.display = on ? "" : "none";
+
           elNotif.hidden = !(
             on &&
             "Notification" in window &&
@@ -1381,13 +1373,6 @@
           } else {
             hidePopup();
           }
-          refreshButtons();
-        });
-
-        elInt.addEventListener("click", function () {
-          mins = OPTS[(OPTS.indexOf(mins) + 1) % OPTS.length];
-          lsSet(K_MIN, String(mins));
-          schedule();
           refreshButtons();
         });
 
