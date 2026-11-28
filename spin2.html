@@ -15,7 +15,7 @@
     <meta name="apple-mobile-web-app-title" content="烫法转盘" />
     <meta name="theme-color" content="#ffeef2" />
 
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="manifest" href="manifest.webmanifest2" />
     <link rel="apple-touch-icon" href="icon-192.png" />
 
     <title>泡芙的烫法转盘</title>
@@ -102,6 +102,24 @@
 
 .t-big   { font-size: clamp(44px, 12vw, 100px) !important; color: #ff6f94; }
 .t-small { font-size: clamp(34px, 9vw, 70px) !important;  color: #6b3b45; }
+
+
+.ch {
+  display: inline-block;
+  animation: wave 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.12s);
+  transform-origin: 50% 80%;
+}
+
+@keyframes wave {
+  0%, 55%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-14px) rotate(-4deg); }
+  40% { transform: translateY(2px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch { animation: none; }
+}
       .sub {
         margin: 6px 0 26px;
         padding: 5px 16px;
@@ -792,8 +810,9 @@
   </head>
 
   <body>
-<h1 class="title"><span class="t-big">泡芙</span><span class="t-small">的转盘</span></h1>
-    <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
+<h1 class="title" aria-label="泡芙的转盘">
+  <span class="t-big"><span class="ch" style="--i:0" aria-hidden="true">泡</span><span class="ch" style="--i:1" aria-hidden="true">芙</span></span><span class="t-small"><span class="ch" style="--i:2" aria-hidden="true">的</span><span class="ch" style="--i:3" aria-hidden="true">转</span><span class="ch" style="--i:4" aria-hidden="true">盘</span></span>
+</h1>    <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
 
     <div class="hint-row">
       <p class="hint">点一点泡芙就开转</p>
@@ -1597,7 +1616,7 @@
           }
 
           var on = lsGet(K_ON) !== "0"; /* on by default */
-          var mins = 60; /* 提醒间隔（分钟）想改就改这个数字 change time*/
+          var mins = 0.1; /* 提醒间隔（分钟）想改就改这个数字 change time*/
           var next = parseInt(lsGet(K_NEXT), 10);
           var shown = false;
 
