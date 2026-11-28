@@ -86,18 +86,22 @@
         padding: 18px 16px 44px;
       }
 
-      .title {
-        margin: 6px 0 0;
-        font-weight: 400;
-        font-size: clamp(30px, 8vw, 42px);
-        letter-spacing: 0.08em;
-        text-align: center;
-        text-shadow:
-          0 3px 0 var(--card),
-          0 0 12px var(--card),
-          0 0 2px var(--card);
-      }
 
+.title {
+  margin: 6px 0 0;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow:
+    -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff,
+    0 -4px 0 #fff, 0 4px 0 #fff, -4px 0 0 #fff, 4px 0 0 #fff,
+    0 7px 0 #f2a9bd, 0 10px 0 #f2a9bd, 0 13px 0 #e88aa6;
+}
+
+.t-big   { font-size: clamp(44px, 12vw, 100px) !important; color: #ff6f94; }
+.t-small { font-size: clamp(34px, 9vw, 70px) !important;  color: #6b3b45; }
       .sub {
         margin: 6px 0 26px;
         padding: 5px 16px;
@@ -164,12 +168,25 @@
         margin-top: 10px;
       }
 
+      .wheel-wrap {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        overflow: hidden; /* clips the rotating square to a circle */
+        box-shadow: 0 8px 0 var(--shadow); /* shadow on the fixed circle, so it doesn't rotate */
+        -webkit-mask-image: -webkit-radial-gradient(
+          white,
+          black
+        ); /* makes Safari respect the clip while spinning */
+        isolation: isolate;
+        z-index: 1;
+      }
+
       .stage canvas {
         width: 100%;
         height: 100%;
         display: block;
-        border-radius: 50%;
-        filter: drop-shadow(0 8px 0 var(--shadow));
+        will-change: transform;
         transition: transform 5s cubic-bezier(0.12, 0.62, 0.08, 1);
       }
 
@@ -617,33 +634,27 @@
         z-index: 9;
       }
 
-      /* ===== Landscape layout ===== */
+      /* ===== Landscape layout (iPad) ===== */
 
       @media (min-width: 800px) and (orientation: landscape) {
         body {
           display: grid;
-          grid-template-columns: minmax(340px, 460px) auto;
-          grid-template-rows: 1fr auto auto auto auto auto auto auto 1fr;
-          justify-content: start;
-          column-gap: clamp(32px, 5vw, 72px);
+          grid-template-columns: clamp(450px, 36vw, 380px) auto;
+          grid-template-rows: 1fr repeat(7, auto) 1fr;
+          justify-content: center; /* center the text + wheel as one group */
           align-items: start;
+          column-gap: clamp(24px, 4vw, 56px);
           padding: 24px 32px 28px;
           overflow-x: hidden;
         }
 
-        .title {
-          grid-area: 2 / 1;
-          margin: 0;
-          text-align: left;
-          font-size: clamp(34px, 4.2vw, 46px);
-        }
-
+.title   { grid-area: 2 / 1; margin: 0 0 10px; text-align: left; }.t-big   { font-size: clamp(48px, 5vw, 94px); }
+.t-small { font-size: clamp(36px, 3.8vw, 74px); }
         .sub {
           grid-area: 3 / 1;
           margin: 10px 0 14px;
           justify-self: start;
         }
-
         .hint-row {
           grid-area: 4 / 1;
           justify-self: start;
@@ -656,7 +667,6 @@
           font-size: 15px;
           padding: 6px 16px;
         }
-
         .links {
           grid-area: 5 / 1;
           width: 100%;
@@ -666,35 +676,48 @@
           padding: 12px 8px;
           font-size: 18px;
         }
-
         .lknote {
           grid-area: 6 / 1;
           width: 100%;
           margin: 0;
           text-align: left;
         }
-
         .result {
           grid-area: 7 / 1;
           width: 100%;
           margin: 14px 0 0;
         }
-
         .records {
           grid-area: 8 / 1;
           width: 100%;
           margin-top: 20px;
-          align-self: start;
         }
 
+        .title,
+        .sub,
+        .hint-row,
+        .links,
+        .lknote,
+        .result,
+        .records {
+          min-width: 0;
+        }
+
+        .result .name {
+          font-size: clamp(50px, 3.4vw, 38px);
+          letter-spacing: 0.04em;
+          padding: 2px 14px;
+          white-space: nowrap;
+        }
+        /* Wheel is now a normal grid item in column 2, centered vertically */
         .stage {
-          position: fixed;
-          right: clamp(16px, 4vw, 60px);
-          top: 50%;
-          transform: translateY(-50%);
+          grid-area: 1 / 2 / -1 / 3;
+          align-self: center;
+          justify-self: center;
+          position: relative; /* was fixed */
+          transform: none;
           margin: 0;
-          width: min(calc(100dvh - 130px), 56vw, 680px);
-          z-index: 0;
+          width: min(calc(100dvh - 130px), 52vw, 680px);
         }
 
         .tap {
@@ -705,20 +728,9 @@
           width: 54px;
           top: -24px;
         }
-
-        .title,
-        .sub,
-        .hint-row,
-        .links,
-        .lknote,
-        .result,
-        .records {
-          position: relative;
-          z-index: 2;
-        }
       }
 
-      /* ===== Short landscape screens ===== */
+      /* ===== Short landscape screens (iPad mini etc.) ===== */
 
       @media (min-width: 800px) and (orientation: landscape) and (max-height: 800px) {
         body {
@@ -739,7 +751,7 @@
           padding: 12px 14px;
         }
         .stage {
-          width: min(calc(100dvh - 110px), 56vw, 680px);
+          width: min(calc(100dvh - 110px), 52vw, 680px);
         }
       }
 
@@ -780,8 +792,7 @@
   </head>
 
   <body>
-    <h1 class="title">泡芙的转盘</h1>
-
+<h1 class="title"><span class="t-big">泡芙</span><span class="t-small">的转盘</span></h1>
     <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
 
     <div class="hint-row">
@@ -831,12 +842,14 @@
         />
       </svg>
 
-      <canvas
-        id="wheel"
-        width="960"
-        height="960"
-        aria-label="烫法转盘"
-      ></canvas>
+      <div class="wheel-wrap">
+        <canvas
+          id="wheel"
+          width="960"
+          height="960"
+          aria-label="烫法转盘"
+        ></canvas>
+      </div>
 
       <!-- ===== Animated cream puff character ===== -->
 
@@ -1584,7 +1597,7 @@
           }
 
           var on = lsGet(K_ON) !== "0"; /* on by default */
-          var mins = 60; /* 提醒间隔（分钟）想改就改这个数字 */
+          var mins = 60; /* 提醒间隔（分钟）想改就改这个数字 change time*/
           var next = parseInt(lsGet(K_NEXT), 10);
           var shown = false;
 
