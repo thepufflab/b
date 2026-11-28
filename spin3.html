@@ -86,17 +86,22 @@
         padding: 18px 16px 44px;
       }
 
-      .title {
-        margin: 6px 0 0;
-        font-weight: 400;
-        font-size: clamp(30px, 8vw, 70px) !important;
-        letter-spacing: 0.08em;
-        text-align: center;
-        text-shadow:
-          0 3px 0 var(--card),
-          0 0 12px var(--card),
-          0 0 2px var(--card);
-      }
+
+.title {
+  margin: 6px 0 0;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow:
+    -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff,
+    0 -4px 0 #fff, 0 4px 0 #fff, -4px 0 0 #fff, 4px 0 0 #fff,
+    0 7px 0 #f2a9bd, 0 10px 0 #f2a9bd, 0 13px 0 #e88aa6;
+}
+
+.t-big   { font-size: clamp(44px, 12vw, 76px); color: #ff6f94; }
+.t-small { font-size: clamp(34px, 9vw, 58px);  color: #6b3b45; }
 
       .sub {
         margin: 6px 0 26px;
@@ -644,12 +649,9 @@
           overflow-x: hidden;
         }
 
-        .title {
-          grid-area: 2 / 1;
-          margin: 0;
-          text-align: left;
-          font-size: clamp(34px, 4vw, 44px);
-        }
+.title   { grid-area: 2 / 1; margin: 0; text-align: left; }
+.t-big   { font-size: clamp(48px, 5vw, 70px); }
+.t-small { font-size: clamp(36px, 3.8vw, 54px); }
         .sub {
           grid-area: 3 / 1;
           margin: 10px 0 14px;
@@ -792,8 +794,7 @@
   </head>
 
   <body>
-    <h1 class="title">泡芙的转盘</h1>
-
+<h1 class="title"><span class="t-big">泡芙</span><span class="t-small">的转盘</span></h1>
     <p class="sub">今天烫哪一种呀？交给转盘决定～</p>
 
     <div class="hint-row">
